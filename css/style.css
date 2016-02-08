@@ -1,7 +1,11 @@
-body {
-    font: 10px sans-serif;
-}
-
 .device {
     background-color: grey;
+    display: inline-block;
+    width: 200px;
+    height: 50px;
+    margin: 5px;
+}
+
+.device-alarm-summary {
+    float: right;
 }
