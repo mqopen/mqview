@@ -22,10 +22,10 @@ $(function() {
     exampleSocket.onmessage = function (event) {
         var msg = JSON.parse(event.data);
         handleMsg(msg);
+    }
     $( "#details" ).on( "click", "div", function() {
       console.log($( this ));
     });
-    }
 });
 
 function createData() {
