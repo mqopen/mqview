@@ -8,6 +8,7 @@
 }
 
 .device-small-name {
+    font-weight: bold;
     text-align: center;
 }
 
@@ -29,11 +30,11 @@
 /* Chrome, Safari, Opera */
 @-webkit-keyframes example {
     from {background-color: #f0f0f0;}
-    to {background-color: #ff6347;}
+    to {background-color: #a94442;}
 }
 
 /* Standard syntax */
 @keyframes example {
     from {background-color: #f0f0f0;}
-    to {background-color: #ff6347;}
+    to {background-color: #a94442;}
 }

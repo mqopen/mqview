@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var devs = [];
-
 var data = createData();
 
 $(function() {
@@ -24,6 +22,9 @@ $(function() {
     exampleSocket.onmessage = function (event) {
         var msg = JSON.parse(event.data);
         handleMsg(msg);
+    $( "#details" ).on( "click", "div", function() {
+      console.log($( this ));
+    });
     }
 });
 
@@ -71,12 +72,27 @@ function updateDeviceDetails() {
             var cls = "device-ok"
             if (j == 0)
                 cls = "device-error"
-            var k =$('#details').loadTemplate("templates/device.html",
+            var summary = getDeviceAlarmSummary(device);
+            $('#details').loadTemplate("templates/device.html",
                 {
                     device_name: device.name,
-                    device_summary: "0/" + i,
+                    device_summary: sprintf("%d/%d", summary.guards, summary.alarms),
                     testcls: cls,
-                }, { append: true});
+                },
+                {append: true});
         }
     }
+}
+
+function getDeviceAlarmSummary(device) {
+    summary = {
+        guards: 0,
+        alarms: 0
+    };
+    for (var i in device.guards) {
+        guard = device.guards[i];
+        summary.guards++;
+        summary.alarms += guard.alarms.length;
+    }
+    return summary;
 }
