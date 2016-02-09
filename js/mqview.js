@@ -68,11 +68,15 @@ function updateDeviceDetails() {
     for (var i in data.devices) {
         var device = data.devices[i];
         for (var j = 0; j < 3; j++) {
-            $('#details').append($("<span>").loadTemplate($("#device-template"),
+            var cls = "device-ok"
+            if (j == 0)
+                cls = "device-error"
+            var k =$('#details').loadTemplate("templates/device.html",
                 {
                     device_name: device.name,
-                    device_summary: "0/" + i
-                }));
+                    device_summary: "0/" + i,
+                    testcls: cls,
+                }, { append: true});
         }
     }
 }
