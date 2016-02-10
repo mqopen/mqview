@@ -1,0 +1,14 @@
+<h2>Devices</h2>
+<div id="device-matrix">
+    {{#each model as |device|}}
+        {{device-small device=device}}
+    {{/each}}
+</div>
+<h2>Brokers</h2>
+<div id="broker-matrix">
+</div>
+<h2>Services</h2>
+<div id="service-matrix">
+</div>
+
+{{outlet}}

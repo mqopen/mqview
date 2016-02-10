@@ -1,0 +1,45 @@
+.ember-view {
+    display: inline;
+}
+
+.device {
+    background-color: #f0f0f0;
+    display: inline-block;
+    width: 200px;
+    height: 70px;
+    margin: 5px;
+    padding: 5px;
+}
+
+.device-small-name {
+    font-weight: bold;
+    text-align: center;
+}
+
+.device-alarm-summary {
+    display: inline-flex;
+    float: right;
+}
+
+.device-error {
+    -webkit-animation-name: example; /* Chrome, Safari, Opera */
+    -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
+    -webkit-animation-iteration-count: infinite; /* Chrome, Safari, Opera */
+    -webkit-animation-direction: alternate; /* Chrome, Safari, Opera */
+    animation-name: example;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes example {
+    from {background-color: #f0f0f0;}
+    to {background-color: #a94442;}
+}
+
+/* Standard syntax */
+@keyframes example {
+    from {background-color: #f0f0f0;}
+    to {background-color: #a94442;}
+}
