@@ -16,7 +16,11 @@
         <div class="col-md-3">
             <h3>Device tree</h3>
             <div id=device-tree>
-                {{ember-jstree data=treeData}}
+                {{ember-jstree
+                    contextMenuReportClicked="contextMenuReportClicked"
+                    treeObject=jstreeObject
+                    eventDidBecomeReady="handleTreeDidBecomeReady"
+                    data=treeData}}
             </div>
         </div>
         <div class="col-md-9">
