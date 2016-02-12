@@ -9,15 +9,81 @@ export default Ember.Route.extend({
         });
     },
     model: function(params) {
-        var device = this.get('guardData').getDevice(params.name);
+        return this.getDevice(params.name);
+    },
+
+    getDevice: function(name) {
+        var device = this.get('guardData').getDevice(name);
+        var _d = null;
         if (device) {
-            return {
-                device: {
-                    name: device.name,
-                    guards: device.guards}
-                };
-        } else {
-            return null;
+            var guards = [];
+            for (var i = 0; i < device.guards.length; i++) {
+                var guard = device.guards[i];
+                var di = guard.dataIdentifier;
+                var reasons = this.getGuardReasons(device, di);
+                var alarms = [];
+                for (var j = 0; j < guard.alarms.length; j++) {
+                    var alarm = guard.alarms[j];
+                    var alarmReason = this.getAlarmReason(reasons, alarm);
+                    alarms.push({
+                        name: alarm.alarm,
+                        status: alarmReason.status,
+                        message: alarmReason.message,
+                    });
+                }
+                guards.push({
+                    topic: this.parseDataIdentifier(di).topic,
+                    alarms: alarms,
+                });
+            }
+
+            _d = {
+                name: device.name,
+                description: device.description,
+                guards: guards,
+            };
         }
+        return _d;
+    },
+
+    parseDataIdentifier: function(dataidentifier) {
+        var res = dataidentifier.split(':');
+        return {
+            broker: res[0],
+            topic: res[1],
+        };
+    },
+
+    getGuardReasons: function(device, dataIdentifier) {
+        var _r = [];
+        if (device.reasons) {
+            for (var i = 0; i < device.reasons.length; i++) {
+                var reason = device.reasons[i];
+                if (reason.guard == dataIdentifier) {
+                    _r.push({
+                        status: reason.status,
+                        message: reason.message,
+                        alarm: reason.alarm,
+                    });
+                }
+            }
+        }
+        return _r;
+    },
+
+    getAlarmReason: function(reasons, alarm) {
+        var _status = "ok";
+        var _message = "ok";
+        for (var i = 0; i < reasons.length; i++) {
+            var reason = reasons[i];
+            if (reason.alarm == alarm.alarm) {
+                _status = reason.status;
+                _message = reason.message;
+            }
+        }
+        return {
+            status: _status,
+            message: _message,
+        };
     }
 });

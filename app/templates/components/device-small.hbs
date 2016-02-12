@@ -1,13 +1,13 @@
 {{#link-to "detail.device" device.name}}
-<div class="device {{device.status}}" >
+<div class="device-small {{device.status}}" >
     <div>
         <p class="device-small-name">{{device.name}}</p>
     </div>
     <div>
         <div class="device-alarm-summary">
-            <p>{{device.guardsCount}}</p>
+            <p>{{device.guardCount}}</p>
             <p>/</p>
-            <p>{{device.alarmsCount}}</p>
+            <p>{{device.alarmCount}}</p>
         </div>
     </div>
 </div>

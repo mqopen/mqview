@@ -2,7 +2,7 @@
     display: inline;
 }
 
-.device {
+.device-small {
     background-color: #f0f0f0;
     display: inline-block;
     width: 200px;
@@ -21,25 +21,36 @@
     float: right;
 }
 
-.device-error {
-    -webkit-animation-name: example; /* Chrome, Safari, Opera */
+.topic-heading {
+    font-family: monospace;
+}
+
+.topic-detail {
+    background-color: #f0f0f0;
+    padding: 5px;
+    margin: 5px;
+}
+
+
+.device-error, .topic-error {
+    -webkit-animation-name: warn-error; /* Chrome, Safari, Opera */
     -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
     -webkit-animation-iteration-count: infinite; /* Chrome, Safari, Opera */
     -webkit-animation-direction: alternate; /* Chrome, Safari, Opera */
-    animation-name: example;
+    animation-name: warn-error;
     animation-duration: 1s;
     animation-iteration-count: infinite;
     animation-direction: alternate;
 }
 
 /* Chrome, Safari, Opera */
-@-webkit-keyframes example {
+@-webkit-keyframes warn-error {
     from {background-color: #f0f0f0;}
-    to {background-color: #a94442;}
+    to {background-color: #FF9A9A;}
 }
 
 /* Standard syntax */
-@keyframes example {
+@keyframes warn-error {
     from {background-color: #f0f0f0;}
-    to {background-color: #a94442;}
+    to {background-color: #FF9A9A;}
 }

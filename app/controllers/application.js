@@ -46,7 +46,6 @@ export default Ember.Controller.extend({
                 });
         }
         this.set('treeData', tData);
-        console.log(this.get('treeData'));
     },
 
     getTreeBaseData: function() {

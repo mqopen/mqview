@@ -1,8 +1,21 @@
-<div>
-    <h3>{{guard.dataIdentifier}}</h3>
-    <ul>
-        {{#each guard.alarms as |alarm|}}
-            <li>{{alarm.alarm}}</li>
-        {{/each}}
-    </ul>
+<div class="topic-detail {{guard.status}}">
+    <h3 class="topic-heading">{{guard.topic}}</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Alarm</th>
+                <th>Status</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each guard.alarms as |alarm|}}
+                <tr>
+                    <td>{{alarm.name}}</td>
+                    <td>{{alarm.status}}</td>
+                    <td>{{alarm.message}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
 </div>

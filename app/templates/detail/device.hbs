@@ -1,6 +1,8 @@
 <div>
-    <h2>{{model.device.name}}</h2>
-    {{#each model.device.guards as |guard|}}
-        {{topic-detail guard=guard}}
-    {{/each}}
+    <h2>{{model.name}}</h2>
+    <div>
+        {{#each model.guards as |guard|}}
+            {{topic-detail guard=guard}}
+        {{/each}}
+    </div>
 </div>
