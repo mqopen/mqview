@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+    guardData: Ember.inject.service('guard-data'),
     init: function() {
         this._super();
         var socket = this.get('websockets').socketFor('ws://localhost:8765/');
@@ -10,7 +11,7 @@ export default Ember.Controller.extend({
             console.log('closed');
         }, this);
     },
-    message: '',
+    treeData: {"text": "aa"},
 
     myOpenHandler: function(event) {
         console.log('On open event has been called: ' + event);
@@ -18,29 +19,10 @@ export default Ember.Controller.extend({
 
     myMessageHandler: function(event) {
         var msg = JSON.parse(event.data);
-        this.handleDevices(msg.devices);
-    },
-
-    handleDevices(devices) {
-        for (var i = 0; i < devices.length; i++) {
-            var device = devices[i];
-            var guardsCount = 0;
-            var alarmsCount = 0;
-            for (var j = 0; j < device.guards.length; j++) {
-                var guard = device.guards[j];
-                guardsCount++;
-                alarmsCount += guard.alarms.length;
-            }
-            var deviceStatus = "device-ok";
-            if (device.status != "ok") {
-                deviceStatus = "device-error"
-            }
-            this.store.createRecord("device", {
-                name: device.name,
-                description: device.description,
-                guardsCount: guardsCount,
-                alarmsCount: alarmsCount,
-                status: deviceStatus});
+        if (msg.feed == "init") {
+            this.get('guardData').initDevices(msg.devices);
+            this.get('guardData').initBrokers(msg.brokers);
+        } else if (msg.feed == "update") {
         }
     },
 });

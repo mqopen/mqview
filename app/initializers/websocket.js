@@ -1,10 +1,8 @@
-export function initialize(/* application */) {
-  // application.inject('route', 'foo', 'service:foo');
+export function initialize(application) {
+    application.inject('controller', 'websockets', 'service:websockets');
 }
 
 export default {
-    name: 'websocket',
-    initialize: function(application) {
-        application.inject('controller', 'websockets', 'service:websockets');
-    }
+    name: 'websockets',
+    initialize: initialize
 };

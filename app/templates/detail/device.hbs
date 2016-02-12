@@ -1,3 +1,6 @@
 <div>
+    <h2>{{model.device.name}}</h2>
+    {{#each model.device.guards as |guard|}}
+        {{topic-detail guard=guard}}
+    {{/each}}
 </div>
-{{outlet}}
