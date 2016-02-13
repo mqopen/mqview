@@ -37,6 +37,17 @@
     margin: 5px;
 }
 
+.no-data {
+    background-color: #f0f0f0;
+    padding: 20px;
+    margin: 5px;
+}
+
+.no-data p {
+    font-weight: bold;
+    text-align: center;
+}
+
 .device-error, .topic-error {
     -webkit-animation-name: warn-error; /* Chrome, Safari, Opera */
     -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */

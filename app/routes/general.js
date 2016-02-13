@@ -11,7 +11,11 @@ export default Ember.Route.extend({
     },
 
     model: function() {
-        return this.getDevices();
+        return {
+            devices: this.getDevices(),
+            brokers: [],
+            services: [],
+        };
     },
 
     getDevices: function() {
