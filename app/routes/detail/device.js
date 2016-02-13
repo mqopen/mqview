@@ -20,19 +20,25 @@ export default Ember.Route.extend({
             for (var i = 0; i < device.guards.length; i++) {
                 var guard = device.guards[i];
                 var di = guard.dataIdentifier;
+                var guardStatus = 'topic-ok';
                 var reasons = this.getGuardReasons(device, di);
                 var alarms = [];
                 for (var j = 0; j < guard.alarms.length; j++) {
                     var alarm = guard.alarms[j];
                     var alarmReason = this.getAlarmReason(reasons, alarm);
+                    var isOK = (alarmReason.status == 'ok');
+                    if (!isOK)
+                        guardStatus = 'topic-error';
                     alarms.push({
                         name: alarm.alarm,
+                        isOK: isOK,
                         status: alarmReason.status,
                         message: alarmReason.message,
                     });
                 }
                 guards.push({
                     topic: this.parseDataIdentifier(di).topic,
+                    status: guardStatus,
                     alarms: alarms,
                 });
             }
@@ -72,8 +78,8 @@ export default Ember.Route.extend({
     },
 
     getAlarmReason: function(reasons, alarm) {
-        var _status = "ok";
-        var _message = "ok";
+        var _status = 'ok';
+        var _message = 'ok';
         for (var i = 0; i < reasons.length; i++) {
             var reason = reasons[i];
             if (reason.alarm == alarm.alarm) {
@@ -85,5 +91,5 @@ export default Ember.Route.extend({
             status: _status,
             message: _message,
         };
-    }
+    },
 });

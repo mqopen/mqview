@@ -3,17 +3,23 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Alarm</th>
-                <th>Status</th>
-                <th>Message</th>
+                <th class="col-md-3">Alarm</th>
+                <th class="col-md-1">Status</th>
+                <th class="col-md-8">Message</th>
             </tr>
         </thead>
         <tbody>
             {{#each guard.alarms as |alarm|}}
                 <tr>
-                    <td>{{alarm.name}}</td>
-                    <td>{{alarm.status}}</td>
-                    <td>{{alarm.message}}</td>
+                    <td class="col-md-3">{{alarm.name}}</td>
+                    <td class="col-md-1">
+                        {{#if alarm.isOK}}
+                            <span class="glyphicon glyphicon-ok"></span>
+                        {{else}}
+                            <span class="glyphicon glyphicon-remove"></span>
+                        {{/if}}
+                    </td>
+                    <td class="col-md-8">{{alarm.message}}</td>
                 </tr>
             {{/each}}
         </tbody>
