@@ -2,7 +2,7 @@
     display: inline;
 }
 
-.device-small {
+.device-small, .broker-small {
     background-color: #f0f0f0;
     display: inline-block;
     width: 200px;
@@ -11,7 +11,7 @@
     padding: 5px;
 }
 
-.device-small-name {
+.device-small-name, .broker-small-name {
     font-weight: bold;
     text-align: center;
 }
@@ -25,7 +25,7 @@
     font-family: monospace;
 }
 
-.topic-detail, .presence-detail {
+.topic-detail, .presence-detail, .broker-detail {
     background-color: #f0f0f0;
     padding: 5px;
     margin: 5px;

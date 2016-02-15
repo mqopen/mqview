@@ -22,15 +22,18 @@ export default Ember.Route.extend({
 
     init: function() {
         this._super(...arguments);
-        this.get('guardData').addDeviceObserver(this, function(sender, key, value, rev) {
-            this.refresh();
-        });
+        this.get('guardData').addDeviceObserver(this, this.onDataChange);
+        this.get('guardData').addBrokerObserver(this, this.onDataChange);
+    },
+
+    onDataChange: function(sender, key, value, rev) {
+        this.refresh();
     },
 
     model: function() {
         return {
             devices: this.getDevices(),
-            brokers: [],
+            brokers: this.getBrokers(),
             services: [],
         };
     },
@@ -59,5 +62,15 @@ export default Ember.Route.extend({
                 });
         }
         return _d;
+    },
+
+    getBrokers: function() {
+        var brokers = this.get('guardData').getBrokers();
+        var _b = [];
+        for (var i = 0; i < brokers.length; i++) {
+            var broker = brokers[i];
+            _b.push(broker);
+        }
+        return _b;
     },
 });

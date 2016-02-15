@@ -34,6 +34,12 @@ export default Ember.Service.extend({
         this.set('brokers', brokers);
     },
 
+    updateDevices: function(devices) {
+    },
+
+    updateBrokers: function(brokers) {
+    },
+
     getDevices: function() {
         return this.get('devices');
     },
@@ -46,12 +52,27 @@ export default Ember.Service.extend({
         this.addObserver('devices', target, method);
     },
 
+    addBrokerObserver: function(target, method) {
+        this.addObserver('brokers', target, method);
+    },
+
     getDevice: function(name) {
         var devices = this.get('devices');
         for (var i = 0; i < devices.length; i++) {
             var device = devices[i];
             if (device.name == name) {
                 return device;
+            }
+        }
+        return null;
+    },
+
+    getBroker: function(name) {
+        var brokers = this.get('brokers');
+        for (var i = 0; i < brokers.length; i++) {
+            var broker = brokers[i];
+            if (broker.name == name) {
+                return broker;
             }
         }
         return null;

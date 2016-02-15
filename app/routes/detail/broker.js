@@ -17,5 +17,22 @@
 
 import Ember from 'ember';
 
-export default Ember.Component.extend({
+export default Ember.Route.extend({
+
+    guardData: Ember.inject.service('guard-data'),
+
+    init: function() {
+        this._super(...arguments);
+        this.get('guardData').addBrokerObserver(this, function(sender, key, value, rev) {
+            this.refresh();
+        });
+    },
+
+    model: function(params) {
+        return this.getBroker(params.name);
+    },
+
+    getBroker: function(name) {
+        return this.get('guardData').getBroker(name);
+    },
 });

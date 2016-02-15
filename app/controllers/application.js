@@ -24,7 +24,7 @@ export default Ember.Controller.extend({
         this._super();
         var socket = this.get('websockets').socketFor('ws://localhost:8765/');
         socket.on('open', this.myOpenHandler, this);
-        socket.on('message', this.myMessageHandler, this);
+        socket.on('message', this.onMessage, this);
         socket.on('close', function(event) {
             console.log('closed');
         }, this);
@@ -36,7 +36,7 @@ export default Ember.Controller.extend({
         console.log('On open event has been called: ' + event);
     },
 
-    myMessageHandler: function(event) {
+    onMessage: function(event) {
         var msg = JSON.parse(event.data);
         if (msg.feed == "init") {
             this.get('guardData').initDevices(msg.devices);

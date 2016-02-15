@@ -13,6 +13,9 @@
 <h2>Brokers</h2>
 <div id="broker-matrix">
     {{#if model.brokers.length}}
+        {{#each model.brokers as |broker|}}
+            {{broker-small broker=broker}}
+        {{/each}}
     {{else}}
         <div class="no-data">
             <p>No brokers available.</p>
