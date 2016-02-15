@@ -1,5 +1,6 @@
 <div>
     <h2>{{model.name}}</h2>
+    {{presence-detail presence=model.presence}}
     <div>
         {{#each model.guards as |guard|}}
             {{topic-detail guard=guard}}

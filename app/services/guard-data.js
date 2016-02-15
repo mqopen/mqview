@@ -55,5 +55,40 @@ export default Ember.Service.extend({
             }
         }
         return null;
-    }
+    },
+
+    getPresenceReason: function(deviceName) {
+        var device = this.getDevice(deviceName);
+        if (device == null)
+            return null;
+        if (device.reasons.presence) {
+            var presence = device.reasons.presence;
+            return {
+                "status": presence.status,
+                "message": presence.message}
+        } else
+            return null;
+    },
+
+    getGuardReasons: function(deviceName, dataIdentifier) {
+        var device = this.getDevice(deviceName);
+        if (device == null)
+            return null;
+        var _r = [];
+        for (var i = 0; i < device.reasons.guards.length; i++) {
+            var reason = device.reasons.guards[i];
+            if (this.areDataIdentifiersEquals(reason.guard, dataIdentifier)) {
+                _r.push({
+                    status: reason.status,
+                    message: reason.message,
+                    alarm: reason.alarm,
+                });
+            }
+        }
+        return _r;
+    },
+
+    areDataIdentifiersEquals: function(a, b) {
+        return a.broker == b.broker && a.topic == b.topic;
+    },
 });

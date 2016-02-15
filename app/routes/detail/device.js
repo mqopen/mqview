@@ -30,51 +30,65 @@ export default Ember.Route.extend({
     },
 
     getDevice: function(name) {
-        var device = this.get('guardData').getDevice(name);
-        var _d = null;
+        var guardData = this.get('guardData');
+        var device = guardData.getDevice(name);
         if (device) {
-            var guards = [];
-            for (var i = 0; i < device.guards.length; i++) {
-                var guard = device.guards[i];
-                var di = guard.dataIdentifier;
-                var guardStatus = 'topic-ok';
-                var reasons = this.getGuardReasons(device, di);
-                var alarms = [];
-                for (var j = 0; j < guard.alarms.length; j++) {
-                    var alarm = guard.alarms[j];
-                    var alarmReason = this.getAlarmReason(reasons, alarm);
-                    var isOK = (alarmReason.status == 'ok');
-                    if (!isOK)
-                        guardStatus = 'topic-error';
-                    alarms.push({
-                        name: alarm.alarm,
-                        isOK: isOK,
-                        status: alarmReason.status,
-                        message: alarmReason.message,
-                    });
-                }
-                guards.push({
-                    topic: this.parseDataIdentifier(di).topic,
-                    status: guardStatus,
-                    alarms: alarms,
-                });
-            }
-
-            _d = {
+            return {
                 name: device.name,
                 description: device.description,
-                guards: guards,
+                guards: this.getGuards(guardData, device),
+                presence: this.getPresence(guardData, device),
             };
         }
-        return _d;
+        return null;
     },
 
-    parseDataIdentifier: function(dataidentifier) {
-        var res = dataidentifier.split(':');
+    getGuards: function(guardData, device) {
+        var guards = [];
+        for (var i = 0; i < device.guards.length; i++) {
+            var guard = device.guards[i];
+            var di = guard.dataIdentifier;
+            var reasons = guardData.getGuardReasons(device.name, di);
+            var alarms = this.getAlarms(guard, reasons);
+            guards.push({
+                topic: di.topic,
+                status: alarms.errorOccured ? "topic-error": "topic-ok",
+                alarms: alarms.alarms,
+            });
+        }
+        return guards;
+    },
+
+    getPresence: function(guardData, device) {
+        var reason = guardData.getPresenceReason(device.name);
+        var isOK = reason.status == "ok";
         return {
-            broker: res[0],
-            topic: res[1],
-        };
+            isEnabled: device.presence.isEnabled,
+            isOK: isOK,
+            status: isOK ? "presence-ok" : "presence-error",
+            topic: device.presence.dataIdentifier.topic,
+            message: reason.message};
+    },
+
+    getAlarms: function(guard, reasons) {
+        var isInError = false;
+        var alarms = [];
+        for (var j = 0; j < guard.alarms.length; j++) {
+            var alarm = guard.alarms[j];
+            var alarmReason = this.getAlarmReason(reasons, alarm);
+            var isOK = (alarmReason.status == 'ok');
+            if (!isInError)
+                isInError = !isOK;
+            alarms.push({
+                name: alarm.alarm,
+                isOK: isOK,
+                status: alarmReason.status,
+                message: alarmReason.message,
+            });
+        }
+        return {
+            errorOccured: isInError,
+            alarms: alarms};
     },
 
     getGuardReasons: function(device, dataIdentifier) {

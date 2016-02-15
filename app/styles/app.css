@@ -25,7 +25,7 @@
     font-family: monospace;
 }
 
-.topic-detail {
+.topic-detail, .presence-detail {
     background-color: #f0f0f0;
     padding: 5px;
     margin: 5px;
@@ -48,7 +48,7 @@
     text-align: center;
 }
 
-.device-error, .topic-error {
+.device-error, .topic-error, .presence-error {
     -webkit-animation-name: warn-error; /* Chrome, Safari, Opera */
     -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */
     -webkit-animation-iteration-count: infinite; /* Chrome, Safari, Opera */

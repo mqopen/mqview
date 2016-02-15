@@ -1,0 +1,33 @@
+<div class="presence-detail {{presence.status}}">
+    {{#if presence.isEnabled}}
+        <div>
+            <h3>Presence</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-md-3">Topic</th>
+                        <th class="col-md-1">Status</th>
+                        <th class="col-md-8">Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-md-3">{{presence.topic}}</td>
+                        <td class="col-md-1">
+                            {{#if presence.isOK}}
+                                <span class="glyphicon glyphicon-ok"></span>
+                            {{else}}
+                                <span class="glyphicon glyphicon-remove"></span>
+                            {{/if}}
+                        </td>
+                        <td class="col-md-8">{{presence.message}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    {{else}}
+        <div>
+            <p>Device don't have presence intofmation.</p>
+        </div>
+    {{/if}}
+</div>
