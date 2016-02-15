@@ -23,6 +23,7 @@
 
 .topic-heading {
     font-family: monospace;
+    font-weight: bold;
 }
 
 .topic-detail, .presence-detail, .broker-detail {

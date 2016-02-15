@@ -1,10 +1,17 @@
 <div>
     <h2>{{model.name}}</h2>
-    {{presence-detail presence=model.presence}}
     <div>
+        <h3>Presence</h3>
+        {{presence-detail presence=model.presence}}
+    </div>
+    <div>
+        <h3>Data</h3>
         {{#each model.guards as |guard|}}
             {{topic-detail guard=guard}}
         {{/each}}
     </div>
-    {{device-info device=model}}
+    <div>
+        <h3>Info</h3>
+        {{device-info device=model}}
+    </div>
 </div>
