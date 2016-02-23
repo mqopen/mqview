@@ -84,6 +84,7 @@ export default Ember.Route.extend({
                 isInError = !isOK;
             alarms.push({
                 name: alarm.alarm,
+                criteria: alarm.criteria,
                 isOK: isOK,
                 status: alarmReason.status,
                 message: alarmReason.message,

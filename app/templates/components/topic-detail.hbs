@@ -3,15 +3,17 @@
     <table class="table">
         <thead>
             <tr>
-                <th class="col-md-3">Alarm</th>
+                <th class="col-md-2">Alarm</th>
+                <th class="col-md-2">Criteria</th>
                 <th class="col-md-1">Status</th>
-                <th class="col-md-8">Message</th>
+                <th class="col-md-7">Message</th>
             </tr>
         </thead>
         <tbody>
             {{#each guard.alarms as |alarm|}}
                 <tr>
-                    <td class="col-md-3">{{alarm.name}}</td>
+                    <td class="col-md-2">{{alarm.name}}</td>
+                    <td class="col-md-2">{{alarm.criteria}}</td>
                     <td class="col-md-1">
                         {{#if alarm.isOK}}
                             <span class="glyphicon glyphicon-ok"></span>
@@ -19,7 +21,7 @@
                             <span class="glyphicon glyphicon-remove"></span>
                         {{/if}}
                     </td>
-                    <td class="col-md-8">{{alarm.message}}</td>
+                    <td class="col-md-7">{{alarm.message}}</td>
                 </tr>
             {{/each}}
         </tbody>
