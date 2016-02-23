@@ -82,6 +82,13 @@ export default Ember.Controller.extend({
                     opened: true
                 },
                 children: []
+            },
+            {
+                text: "Brokers",
+                state: {
+                    opened: true
+                },
+                children: []
             }
         ];
     },
