@@ -94,15 +94,12 @@ export default Ember.Controller.extend({
     },
 
     actions: {
-        handleTreeDidBecomeReady: function() {
-            var treeObject = this.get('jstreeObject');
-            treeObject.on('select_node.jstree', function(e, data) {
-                if (data.node.li_attr.class == "tree-general") {
-                    this.transitionToRoute("general");
-                } else if (data.node.li_attr.class == "device-node") {
-                    this.transitionToRoute("detail.device", data.node.text);
-                }
-            }.bind(this));
+        treeSelectNode: function(e, data) {
+            if (e.li_attr.class == "tree-general") {
+                this.transitionToRoute("general");
+            } else if (e.li_attr.class == "device-node") {
+                this.transitionToRoute("detail.device", e.text);
+            }
         },
     },
 });

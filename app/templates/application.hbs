@@ -18,8 +18,7 @@
             <div id=device-tree>
                 {{ember-jstree
                     contextMenuReportClicked="contextMenuReportClicked"
-                    treeObject=jstreeObject
-                    eventDidBecomeReady="handleTreeDidBecomeReady"
+                    eventDidSelectNode = (action 'treeSelectNode')
                     data=treeData}}
             </div>
         </div>
