@@ -19,14 +19,21 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
     guardData: Ember.inject.service('guard-data'),
+    websocket: Ember.inject.service('websockets'),
     treeData: null,
+    treeTheme: {
+        dots: false,
+    },
     init: function() {
-        this._super();
-        var socket = this.get('websockets').socketFor('ws://localhost:8765/');
+        this._super(...arguments);
+        var socket = this.get('websocket').socketFor('ws://localhost:8765/');
         socket.on('open', this.myOpenHandler, this);
         socket.on('message', this.onMessage, this);
+        socket.on('error', this.onSocketError, this);
         socket.on('close', function(event) {
-            console.log('closed');
+            Ember.run.later(this, () => {
+                socket.reconnect();
+            }, 1000);
         }, this);
         this.get('guardData').addDeviceObserver(this, 'updateTree');
         this.set('treeData', this.getTreeBaseData());
@@ -45,6 +52,9 @@ export default Ember.Controller.extend({
         }
     },
 
+    onSocketError: function(event) {
+    },
+
     updateTree: function(sender, key, value, rev) {
         var tData = this.getTreeBaseData();
         var devices = this.get('guardData').getDevices();;
@@ -54,9 +64,7 @@ export default Ember.Controller.extend({
             tData[1].children.push(
                 {
                     text: device.name,
-                    a_attr: {
-                        href: "detail/device/" + device.name
-                    },
+                    icon: "glyphicon glyphicon-tasks",
                     li_attr: {
                         class: "device-node"
                     }
@@ -68,23 +76,26 @@ export default Ember.Controller.extend({
     getTreeBaseData: function() {
         return [
             {
-                text: "General",
+                text: 'General',
+                icon: 'glyphicon glyphicon-th',
                 state: {
                     selected: true
                 },
                 li_attr: {
-                    class: "tree-general"
+                    class: 'tree-general'
                 }
             },
             {
-                text: "Devices",
+                text: 'Devices',
+                icon: 'glyphicon glyphicon-arrow-right',
                 state: {
                     opened: true
                 },
                 children: []
             },
             {
-                text: "Brokers",
+                text: 'Brokers',
+                icon: 'glyphicon glyphicon-arrow-right',
                 state: {
                     opened: true
                 },
