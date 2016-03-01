@@ -18,4 +18,9 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+    actions: {
+        topicDetail: function(topic, alarm) {
+            this.transitionToRoute('detail.alarm', this.get('model').name, topic, alarm);
+        },
+    },
 });

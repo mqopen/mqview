@@ -1,8 +1,8 @@
 <h2>Devices</h2>
-<div id="device-matrix">
+<div class="matrix-view">
     {{#if model.devices.length}}
         {{#each model.devices as |device|}}
-            {{device-small device=device}}
+            {{device-small device=device onClick=(action 'deviceClicked')}}
         {{/each}}
     {{else}}
         <div class="no-data">
@@ -11,10 +11,10 @@
     {{/if}}
 </div>
 <h2>Brokers</h2>
-<div id="broker-matrix">
+<div class="matrix-view">
     {{#if model.brokers.length}}
         {{#each model.brokers as |broker|}}
-            {{broker-small broker=broker}}
+            {{broker-small broker=broker onClick=(action 'brokerClicked')}}
         {{/each}}
     {{else}}
         <div class="no-data">
@@ -23,7 +23,7 @@
     {{/if}}
 </div>
 <h2>Services</h2>
-<div id="service-matrix">
+<div class="matrix-view">
     {{#if model.services.length}}
     {{else}}
         <div class="no-data">

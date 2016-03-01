@@ -60,7 +60,7 @@ export default Ember.Service.extend({
         var devices = this.get('devices');
         for (var i = 0; i < devices.length; i++) {
             var device = devices[i];
-            if (device.name == name) {
+            if (device.name === name) {
                 return device;
             }
         }
@@ -71,7 +71,7 @@ export default Ember.Service.extend({
         var brokers = this.get('brokers');
         for (var i = 0; i < brokers.length; i++) {
             var broker = brokers[i];
-            if (broker.name == name) {
+            if (broker.name === name) {
                 return broker;
             }
         }
@@ -80,21 +80,24 @@ export default Ember.Service.extend({
 
     getPresenceReason: function(deviceName) {
         var device = this.getDevice(deviceName);
-        if (device == null)
+        if (device === null) {
             return null;
+        }
         if (device.reasons.presence) {
             var presence = device.reasons.presence;
             return {
                 "status": presence.status,
-                "message": presence.message}
-        } else
+                "message": presence.message};
+        } else {
             return null;
+        }
     },
 
     getGuardReasons: function(deviceName, dataIdentifier) {
         var device = this.getDevice(deviceName);
-        if (device == null)
+        if (device === null) {
             return null;
+        }
         var _r = [];
         for (var i = 0; i < device.reasons.guards.length; i++) {
             var reason = device.reasons.guards[i];
@@ -110,6 +113,6 @@ export default Ember.Service.extend({
     },
 
     areDataIdentifiersEquals: function(a, b) {
-        return a.broker == b.broker && a.topic == b.topic;
+        return a.broker === b.broker && a.topic === b.topic;
     },
 });

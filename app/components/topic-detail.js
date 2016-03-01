@@ -18,4 +18,14 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+    actions: {
+        topicDetail: function(topic, alarm) {
+            console.log('topic detail clicked: ' + topic + ' ' + alarm);
+            this.sendAction('topicDetail', this.convertTopic(topic), alarm);
+        },
+    },
+
+    convertTopic: function(topic) {
+        return topic.replace(/\//g, '.');
+    },
 });

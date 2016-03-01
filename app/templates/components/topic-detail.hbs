@@ -1,6 +1,6 @@
 <div class="topic-detail {{guard.status}}">
     <p class="topic-heading">{{guard.topic}}</p>
-    <table class="table">
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th class="col-md-2">Alarm</th>
@@ -11,7 +11,7 @@
         </thead>
         <tbody>
             {{#each guard.alarms as |alarm|}}
-                <tr>
+                <tr class="view-row" {{action 'topicDetail' guard.topic alarm.name}}>
                     <td class="col-md-2">{{alarm.name}}</td>
                     <td class="col-md-2">{{alarm.criteria}}</td>
                     <td class="col-md-1">

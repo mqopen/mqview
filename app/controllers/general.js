@@ -18,4 +18,15 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+    actions: {
+        deviceClicked: function(device) {
+            this.transitionToRoute('detail.device', device);
+        },
+        brokerClicked: function(device) {
+            this.transitionToRoute('detail.broker', device);
+        },
+        serviceClicked: function(device) {
+            this.transitionToRoute('detail.service', device);
+        },
+    },
 });

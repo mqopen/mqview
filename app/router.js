@@ -27,6 +27,7 @@ Router.map(function() {
   this.route('detail', function() {
     this.route('device', {path: '/device/:name'});
     this.route('broker', {path: '/broker/:name'});
+    this.route('alarm', {path: '/alarm/:device/:topic/:alarm'});
   });
 });
 

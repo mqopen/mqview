@@ -1,5 +1,4 @@
-{{#link-to "detail.device" device.name}}
-<div class="device-small {{device.status}}" >
+<div class="device-small {{device.status}} view-small" {{action 'onClick'}}>
     <div>
         <p class="device-small-name">{{device.name}}</p>
     </div>
@@ -11,4 +10,3 @@
         </div>
     </div>
 </div>
-{{/link-to}}

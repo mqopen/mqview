@@ -7,7 +7,7 @@
     <div>
         <h3>Data</h3>
         {{#each model.guards as |guard|}}
-            {{topic-detail guard=guard}}
+            {{topic-detail topicDetail=(action 'topicDetail') guard=guard}}
         {{/each}}
     </div>
     <div>

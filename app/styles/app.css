@@ -4,7 +4,6 @@
 
 .device-small, .broker-small {
     background-color: #f0f0f0;
-    display: inline-block;
     width: 200px;
     height: 70px;
     margin: 5px;
@@ -47,6 +46,14 @@
 .no-data p {
     font-weight: bold;
     text-align: center;
+}
+
+.matrix-view {
+    display: inline-flex;
+}
+
+.view-small, .view-row {
+    cursor: pointer;
 }
 
 .device-error, .topic-error, .presence-error {
