@@ -10,7 +10,8 @@
     "pretender": "~0.10.1",
     "lodash": "~3.7.0",
     "Faker": "~3.0.0",
-    "jstree": "^3.2.1"
+    "jstree": "^3.2.1",
+    "bootstrap": "~3.3.5"
   },
   "resolutions": {
     "ember": "2.3.0"

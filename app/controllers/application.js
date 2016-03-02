@@ -27,8 +27,8 @@ export default Ember.Controller.extend({
     init: function() {
         this._super(...arguments);
         var socket = this.get('websocket').socketFor('ws://localhost:8765/');
-        socket.on('open', this.myOpenHandler, this);
-        socket.on('message', this.onMessage, this);
+        socket.on('open', this.onSocketOpen, this);
+        socket.on('message', this.onSocketMessage, this);
         socket.on('error', this.onSocketError, this);
         socket.on('close', function(event) {
             Ember.run.later(this, () => {
@@ -39,16 +39,15 @@ export default Ember.Controller.extend({
         this.set('treeData', this.getTreeBaseData());
     },
 
-    myOpenHandler: function(event) {
-        console.log('On open event has been called: ' + event);
+    onSocketOpen: function(event) {
     },
 
-    onMessage: function(event) {
+    onSocketMessage: function(event) {
         var msg = JSON.parse(event.data);
-        if (msg.feed == "init") {
+        if (msg.feed === "init") {
             this.get('guardData').initDevices(msg.devices);
             this.get('guardData').initBrokers(msg.brokers);
-        } else if (msg.feed == "update") {
+        } else if (msg.feed === "update") {
         }
     },
 
@@ -57,7 +56,7 @@ export default Ember.Controller.extend({
 
     updateTree: function(sender, key, value, rev) {
         var tData = this.getTreeBaseData();
-        var devices = this.get('guardData').getDevices();;
+        var devices = this.get('guardData').getDevices();
         var deviceList = []
         for (var i = 0; i < devices.length; i++) {
             var device = devices[i];
@@ -106,9 +105,9 @@ export default Ember.Controller.extend({
 
     actions: {
         treeSelectNode: function(e, data) {
-            if (e.li_attr.class == "tree-general") {
+            if (e.li_attr.class === "tree-general") {
                 this.transitionToRoute("general");
-            } else if (e.li_attr.class == "device-node") {
+            } else if (e.li_attr.class === "device-node") {
                 this.transitionToRoute("detail.device", e.text);
             }
         },

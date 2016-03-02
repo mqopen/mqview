@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>{{#link-to 'general'}}Diagnostic{{/link-to}}</li>
-                <li>{{#link-to 'general'}}Statistic{{/link-to}}</li>
+                <li>{{#link-to 'statistics'}}Statistic{{/link-to}}</li>
                 <li>{{#link-to 'about'}}About{{/link-to}}</li>
             </ul>
         </div>
@@ -25,7 +25,6 @@
             <h3>Device tree</h3>
             <div id=device-tree>
                 {{ember-jstree
-                    contextMenuReportClicked="contextMenuReportClicked"
                     eventDidSelectNode = (action 'treeSelectNode')
                     themes=treeTheme
                     data=treeData}}

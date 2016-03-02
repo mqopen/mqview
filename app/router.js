@@ -30,6 +30,7 @@ Router.map(function() {
     this.route('alarm', {path: '/alarm/:device/:topic/:alarm'});
   });
   this.route('about');
+  this.route('statistics');
 });
 
 export default Router;
