@@ -29,6 +29,7 @@ Router.map(function() {
     this.route('broker', {path: '/broker/:name'});
     this.route('alarm', {path: '/alarm/:device/:topic/:alarm'});
   });
+  this.route('about');
 });
 
 export default Router;
