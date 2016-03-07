@@ -1,14 +1,38 @@
 <h2>Statistics</h2>
-<div class="row">
+<p>This page is under development. There is no functionality yet. Sorry.</p>
+<div class="row text-center">
     <div class="col-md-4">
         <h3>Device error</h3>
+        {{#data-visual as |ctx width height|}}
+            {{radial-progress
+                select=ctx.svg.select
+                width=width
+                height=height}}
+        {{/data-visual}}
     </div>
     <div class="col-md-4">
         <h3>Topic error</h3>
+        {{#data-visual as |ctx width height|}}
+            {{radial-progress
+                select=ctx.svg.select
+                width=width
+                height=height}}
+        {{/data-visual}}
     </div>
     <div class="col-md-4">
         <h3>Alarm error</h3>
+        {{#data-visual as |ctx width height|}}
+            {{radial-progress
+                select=ctx.svg.select
+                width=width
+                height=height}}
+        {{/data-visual}}
     </div>
 </div>
 <h3>JSON update rate</h3>
-<p>TODO</p>
+{{#data-visual as |ctx width height|}}
+    {{update-freq-plot
+        select=ctx.svg.select
+        width=width
+        height=height}}
+{{/data-visual}}
