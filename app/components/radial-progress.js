@@ -45,10 +45,11 @@ export default Ember.Component.extend(GraphicSupport, {
         this.innerLayer(selection);
     },
 
-    innerLayer: join([50], 'circle', {
+    innerLayer: join('progress', '.progress', {
         update: function(selection) {
         },
         enter: function(selection) {
+            console.log(selection);
             this.drawBackground(selection);
             this.drawLabel(selection);
         },

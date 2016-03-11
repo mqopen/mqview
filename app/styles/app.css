@@ -47,6 +47,7 @@
 
 .matrix-view {
     display: inline-flex;
+    flex-wrap: wrap;
 }
 
 .view-small, .view-row {

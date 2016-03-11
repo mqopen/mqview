@@ -47,13 +47,12 @@ export default Ember.Component.extend(GraphicSupport, {
     },
 
     call: function(selection) {
-        var svg = selection.append("svg");
-        svg.append("g")
+        selection.append("g")
             .attr("class", "x axis")
             //.attr("transform", "translate(0," + this.get('height') + ")")
             .attr("transform", "translate(0," + 100 + ")")
             .call(this.get('xAxis'));
-        svg.append("g")
+        selection.append("g")
             .attr("class", "y axis")
             .call(this.get('yAxis'))
             .append("text")
@@ -62,11 +61,17 @@ export default Ember.Component.extend(GraphicSupport, {
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
                 .text("Price ($)");
-        this.drawData(svg);
+        this.drawData(selection.append('g'));
     },
 
     drawData: join([1,2,3,4,5,6,7,8,9], 'a', {
         enter: function(selection) {
+            selection
+                .append('g')
+                .append('text')
+                    .text(function(d) {
+                        return d;
+                    });
         }
     })
 });
