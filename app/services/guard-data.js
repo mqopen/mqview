@@ -35,6 +35,62 @@ export default Ember.Service.extend({
     },
 
     updateDevices: function(devices) {
+        for (var i = 0; i < devices.length; i++) {
+            var device = devices[i];
+            this.updateDevice(device);
+        }
+        this.notifyPropertyChange('devices');
+    },
+
+    updateDevice: function(device) {
+        var deviceIndex = this.getDeviceIndex(device.name);
+        if (deviceIndex === null) {
+            return null;
+        } else {
+            var devices = this.get('devices');
+            var currentDevice = devices[deviceIndex];
+            devices[deviceIndex] = this.createNewDevice(currentDevice, device);
+        }
+    },
+
+    createNewDevice: function(currentDevice, update) {
+        currentDevice.status = update.status;
+        currentDevice.reasons = this.createNewReasons(currentDevice.reasons, update.reasons);
+        return currentDevice;
+    },
+
+    createNewReasons: function(currentReasons, update) {
+        currentReasons.presence = this.createNewPresence(currentReasons.presence, update.presence);
+        currentReasons.guards = this.createNewGuards(currentReasons.guards, update.guards);
+        return currentReasons;
+    },
+
+    createNewGuards: function(currentGuards, update) {
+        if (update === null) {
+            return currentGuards;
+        } else if (update.length == 0) {
+            return currentGuards;
+        } else {
+            for (var i = 0; i < update.length; i++) {
+                var updateGuard = update[i];
+                for (var j = 0; j < currentGuards.length; j++) {
+                    var currentGuard = currentGuards[j];
+                    if (this.areDataIdentifiersEquals(updateGuard.guard, currentGuard.guard)) {
+                        currentGuards[j] = updateGuard;
+                    }
+                }
+            }
+            return currentGuards;
+        }
+    },
+
+    createNewPresence: function(currentPresence, update) {
+        if (update === null) {
+            return currentPresence;
+        } else {
+            // TODO
+            return currentPresence;
+        }
     },
 
     updateBrokers: function(brokers) {
@@ -57,11 +113,21 @@ export default Ember.Service.extend({
     },
 
     getDevice: function(name) {
+        var index = this.getDeviceIndex(name);
+        if (index === null) {
+            return null;
+        } else {
+            var devices = this.get('devices');
+            return devices[index];
+        }
+    },
+
+    getDeviceIndex: function(name) {
         var devices = this.get('devices');
         for (var i = 0; i < devices.length; i++) {
             var device = devices[i];
             if (device.name === name) {
-                return device;
+                return i;
             }
         }
         return null;

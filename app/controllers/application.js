@@ -48,6 +48,7 @@ export default Ember.Controller.extend({
             this.get('guardData').initDevices(msg.devices);
             this.get('guardData').initBrokers(msg.brokers);
         } else if (msg.feed === "update") {
+            this.get('guardData').updateDevices(msg.devices);
         }
     },
 
