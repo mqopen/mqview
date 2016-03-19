@@ -35,40 +35,59 @@ export default Ember.Component.extend(GraphicSupport, {
         min: 0,
         max: 100
     },
+    step: Math.PI * 2 / 100,
+    progress: 0,
+
+    progressData: Ember.computed('progress', function() {
+        return [this.get('progress')];
+    }),
 
     radius: Ember.computed('width', 'height', function() {
         return Math.max(this.get('width'), this.get('height')) / 2;
     }),
 
+    arcGenerator: Ember.computed(function() {
+        return d3.svg.arc()
+            .innerRadius(this.get('radius')/2 - 20)
+            .outerRadius(this.get('radius')/2)
+            .startAngle(0)
+            .endAngle((x) => this.get('step') * x);
+    }),
+
     call: function(selection) {
         selection.attr('transform', 'translate(0,0)');
+        this.drawBackground(selection);
         this.innerLayer(selection);
     },
 
-    innerLayer: join('progress', '.progress', {
+    innerLayer: join('progressData', '.path', {
         update: function(selection) {
         },
         enter: function(selection) {
-            console.log(selection);
-            this.drawBackground(selection);
+            this.drawProgress(selection);
             this.drawLabel(selection);
         },
         exit: function(selection) {
         }
     }),
 
-    drawBackground: function(group) {
-          group.append("g")
-                .append("path")
-                    .attr("transform", "translate(" + this.get('width')/2 + "," + this.get('radius')/2+20 + ")")
-                    .attr("d", d3.svg.arc()
-                                .innerRadius(this.get('radius')/2 - 20)
-                                .outerRadius(this.get('radius')/2)
-                                .startAngle(0)
-                                .endAngle(Math.PI + 1));
+    drawBackground: function(selection) {
     },
 
-    drawLabel: function(group) {
-        group.append('text').text('test');
+    drawProgress: function(selection) {
+        var arc = this.get('arcGenerator');
+        selection.append("g")
+                .append("path")
+                    .attr("transform", this.getTranslation())
+                    .attr("d", arc);
+    },
+
+    drawLabel: function(selection) {
+        selection.append('text')
+            .text(function (d){return d;});
+    },
+
+    getTranslation: function() {
+        return "translate(" + this.get('width')/2 + "," + this.get('radius')/2+20 + ")";
     },
 });
