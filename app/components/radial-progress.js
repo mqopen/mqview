@@ -18,9 +18,10 @@
 import Ember from 'ember';
 import d3 from 'd3';
 import GraphicSupport from 'ember-cli-d3/mixins/d3-support';
+import MarginConvention from 'ember-cli-d3/mixins/margin-convention';
 import { join } from 'ember-cli-d3/utils/d3';
 
-export default Ember.Component.extend(GraphicSupport, {
+export default Ember.Component.extend(GraphicSupport, MarginConvention, {
     duration: 1000,
     margin: {
         top: 0,
@@ -28,39 +29,59 @@ export default Ember.Component.extend(GraphicSupport, {
         bottom: 0,
         left: 0
     },
-    width: 200,
-    height: 200,
+    width: 300,
+    height: 300,
     diameter: 0,
+    pathWidht: 20,
     bound: {
         min: 0,
         max: 100
     },
-    step: Math.PI * 2 / 100,
     progress: 0,
 
     progressData: Ember.computed('progress', function() {
         return [this.get('progress')];
     }),
 
-    radius: Ember.computed('width', 'height', function() {
-        return Math.max(this.get('width'), this.get('height')) / 2;
-    }),
+    diameter: Ember.computed('width', 'height', function() {
+        return Math.min(this.get('width'), this.get('height'));
+    }).readOnly(),
+
+    radius: Ember.computed('diameter', function() {
+        return this.get('diameter') / 2;
+    }).readOnly(),
+
+    xScale: Ember.computed(function() {
+        return d3.scale.linear()
+            .domain([0, 100])
+            .range([0, 2 * Math.PI]);
+    }).readOnly(),
+
+    yScale: Ember.computed('radius', function() {
+        return d3.scale.sqrt()
+            .range([0, this.get('radius')]);
+    }).readOnly(),
 
     arcGenerator: Ember.computed(function() {
+        var xScale = this.get('xScale');
+        var yScale = this.get('yScale');
+        var radius = this.get('radius');
+        var pathWidht = this.get('pathWidht');
         return d3.svg.arc()
-            .innerRadius(this.get('radius')/2 - 20)
-            .outerRadius(this.get('radius')/2)
+            .innerRadius(radius - pathWidht)
+            .outerRadius(radius)
             .startAngle(0)
-            .endAngle((x) => this.get('step') * x);
+            .endAngle((x) => xScale(x));
     }),
 
     call: function(selection) {
-        selection.attr('transform', 'translate(0,0)');
-        this.drawBackground(selection);
+        var width = this.get('contentWidth');
+        var height = this.get('contentHeight');
+        selection.attr('transform', `translate(${width / 2} ${height / 2 + this.get('margin.top')})`);
         this.innerLayer(selection);
     },
 
-    innerLayer: join('progressData', '.path', {
+    innerLayer: join('progressData', 'path', {
         update: function(selection) {
         },
         enter: function(selection) {
@@ -71,23 +92,25 @@ export default Ember.Component.extend(GraphicSupport, {
         }
     }),
 
-    drawBackground: function(selection) {
-    },
-
     drawProgress: function(selection) {
         var arc = this.get('arcGenerator');
-        selection.append("g")
-                .append("path")
-                    .attr("transform", this.getTranslation())
-                    .attr("d", arc);
+        selection.append('g')
+                .append('path')
+                    //.attr('transform', 'translate(100,100)')
+                    .attr('d', arc);
     },
 
     drawLabel: function(selection) {
-        selection.append('text')
-            .text(function (d){return d;});
+        selection.append('g')
+            .append('text')
+                //.attr('transform', this.getTranslation())
+                //.attr('x', this.get('widht')/2)
+                //.attr('y', 10)
+                .style("text-anchor", "middle")
+                .text(function(d) { return d + '%'; });
     },
 
     getTranslation: function() {
-        return "translate(" + this.get('width')/2 + "," + this.get('radius')/2+20 + ")";
+        return "translate(" + this.get('radius')/2 + "," + 0 + ")";
     },
 });

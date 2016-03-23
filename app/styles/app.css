@@ -54,6 +54,15 @@
     cursor: pointer;
 }
 
+.data-visual {
+  width: 100%;
+  height: 100%;
+}
+
+.radial-progress {
+    height: 150px;
+}
+
 .device-error, .topic-error, .presence-error {
     -webkit-animation-name: warn-error; /* Chrome, Safari, Opera */
     -webkit-animation-duration: 1s; /* Chrome, Safari, Opera */

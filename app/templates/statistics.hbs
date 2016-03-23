@@ -3,33 +3,39 @@
 <div class="row text-center">
     <div class="col-md-4">
         <h3>Device error</h3>
-        {{#data-visual as |ctx width height|}}
-            {{radial-progress
-                select=ctx.svg.select
-                width=width
-                height=height
-                progress=model.deviceOK}}
-        {{/data-visual}}
+        <div class="radial-progress">
+            {{#data-visual as |ctx width height|}}
+                {{radial-progress
+                    select=ctx.svg.select.chart
+                    width=width
+                    height=height
+                    progress=model.deviceOK}}
+            {{/data-visual}}
+        </div>
     </div>
     <div class="col-md-4">
         <h3>Topic error</h3>
-        {{#data-visual as |ctx width height|}}
-            {{radial-progress
-                select=ctx.svg.select
-                width=width
-                height=height
-                progress=model.topicOK}}
-        {{/data-visual}}
+        <div class="radial-progress">
+            {{#data-visual as |ctx width height|}}
+                {{radial-progress
+                    select=ctx.svg.select.chart
+                    width=width
+                    height=height
+                    progress=model.topicOK}}
+            {{/data-visual}}
+        </div>
     </div>
     <div class="col-md-4">
         <h3>Alarm error</h3>
-        {{#data-visual as |ctx width height|}}
-            {{radial-progress
-                select=ctx.svg.select
-                width=width
-                height=height
-                progress=model.alarmOK}}
-        {{/data-visual}}
+        <div class="radial-progress">
+            {{#data-visual as |ctx width height|}}
+                {{radial-progress
+                    select=ctx.svg.select.chart
+                    width=width
+                    height=height
+                    progress=model.alarmOK}}
+            {{/data-visual}}
+        </div>
     </div>
 </div>
 <h3>JSON update rate</h3>
