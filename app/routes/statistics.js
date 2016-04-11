@@ -18,13 +18,30 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+
     guardData: Ember.inject.service('guard-data'),
+
+    init: function() {
+        this._super(...arguments);
+        this.get('guardData').addDeviceObserver(this, this.onStatisticsUpdate);
+    },
+
+    onStatisticsUpdate: function(sender, key, value, rev) {
+        this.refresh();
+    },
+
     model: function() {
-        var guardData = this.get('guardData');
+        var statistics = this.get('guardData').getStatistics();
+        var devicesOK = statistics.devices - statistics.devicesInError;
+        var guardsOK = statistics.guards - statistics.guardsInError;
+        var alarmsOK = statistics.alarms - statistics.alarmsInError;
         return {
-            deviceOK: guardData.getDevicesCount() / 100,
-            topicOK: 60,
-            alarmOK: 40
+            hasDevices: statistics.devices > 0,
+            hasGuards: statistics.guards > 0,
+            hasAlarms: statistics.alarms > 0,
+            devicesOK: 100 / statistics.devices * devicesOK,
+            topicsOK: 100 / statistics.guards * guardsOK,
+            alarmsOK: 100 / statistics.alarms * alarmsOK
         };
     }
 });

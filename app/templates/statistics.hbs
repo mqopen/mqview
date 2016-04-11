@@ -2,39 +2,51 @@
 <p>This page is under development. There is no functionality yet. Sorry.</p>
 <div class="row text-center">
     <div class="col-md-4">
-        <h3>Device error</h3>
+        <h3>Devices</h3>
         <div class="radial-progress">
-            {{#data-visual as |ctx width height|}}
-                {{radial-progress
-                    select=ctx.svg.select.chart
-                    width=width
-                    height=height
-                    progress=model.deviceOK}}
-            {{/data-visual}}
+            {{#if model.hasDevices}}
+                {{#data-visual as |ctx width height|}}
+                    {{radial-progress
+                        select=ctx.svg.select.chart
+                        width=width
+                        height=height
+                        progress=model.devicesOK}}
+                {{/data-visual}}
+            {{else}}
+                <p>No devices</p>
+            {{/if}}
         </div>
     </div>
     <div class="col-md-4">
-        <h3>Topic error</h3>
+        <h3>Topics</h3>
         <div class="radial-progress">
-            {{#data-visual as |ctx width height|}}
-                {{radial-progress
-                    select=ctx.svg.select.chart
-                    width=width
-                    height=height
-                    progress=model.topicOK}}
-            {{/data-visual}}
+            {{#if model.hasGuards}}
+                {{#data-visual as |ctx width height|}}
+                    {{radial-progress
+                        select=ctx.svg.select.chart
+                        width=width
+                        height=height
+                        progress=model.topicsOK}}
+                {{/data-visual}}
+            {{else}}
+                <p>No guards</p>
+            {{/if}}
         </div>
     </div>
     <div class="col-md-4">
-        <h3>Alarm error</h3>
+        <h3>Alarms</h3>
         <div class="radial-progress">
-            {{#data-visual as |ctx width height|}}
-                {{radial-progress
-                    select=ctx.svg.select.chart
-                    width=width
-                    height=height
-                    progress=model.alarmOK}}
-            {{/data-visual}}
+            {{#if model.hasAlarms}}
+                {{#data-visual as |ctx width height|}}
+                    {{radial-progress
+                        select=ctx.svg.select.chart
+                        width=width
+                        height=height
+                        progress=model.alarmsOK}}
+                {{/data-visual}}
+            {{else}}
+                <p>No alarms</p>
+            {{/if}}
         </div>
     </div>
 </div>

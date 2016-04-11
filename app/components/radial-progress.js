@@ -40,7 +40,7 @@ export default Ember.Component.extend(GraphicSupport, MarginConvention, {
     progress: 0,
 
     progressData: Ember.computed('progress', function() {
-        return [this.get('progress')];
+        return [Math.round(this.get('progress'))];
     }),
 
     diameter: Ember.computed('width', 'height', function() {
@@ -75,7 +75,7 @@ export default Ember.Component.extend(GraphicSupport, MarginConvention, {
         this.innerLayer(selection);
     },
 
-    innerLayer: join('progressData', 'path', {
+    innerLayer: join('progressData', '.path', {
         update: function(selection) {
         },
         enter: function(selection) {
