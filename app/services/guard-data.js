@@ -20,6 +20,14 @@ import Ember from 'ember';
 export default Ember.Service.extend({
     devices: null,
     brokers: null,
+    stats: {
+        devices: 0,
+        guards: 0,
+        alarms: 0,
+        devicesInError: 0,
+        guardsInError: 0,
+        alarmsInError:0
+    },
     init: function() {
         this._super(...arguments);
         this.set('devices', []);
@@ -28,6 +36,7 @@ export default Ember.Service.extend({
 
     initDevices: function(devices) {
         this.set('devices', devices);
+        this.updateStats();
     },
 
     initBrokers: function(brokers) {
@@ -39,6 +48,7 @@ export default Ember.Service.extend({
             var device = devices[i];
             this.updateDevice(device);
         }
+        this.updateStats();
         this.notifyPropertyChange('devices');
     },
 
@@ -181,4 +191,54 @@ export default Ember.Service.extend({
     areDataIdentifiersEquals: function(a, b) {
         return a.broker === b.broker && a.topic === b.topic;
     },
+
+    getDevicesCount: function() {
+        return this.get('stats').devices;
+    },
+
+    getGuardsCount: function() {
+        return this.get('stats').guards;
+    },
+
+    getAlarmsCount: function() {
+        return this.get('stats').alarms;
+    },
+
+    getDevicesInErrorCount: function() {
+        return this.get('stats').devicesInError;
+    },
+
+    getGuardsInErrorCount: function() {
+        return this.get('stats').guardsInError;
+    },
+
+    getAlarmsInErrorCount: function() {
+        return this.get('stats').alarmsInError;
+    },
+
+    updateStats: function() {
+        var devices = this.get('devices');
+        var devicesCount = 0;
+        var guardsCount = 0;
+        var alarmsCount = 0;
+        var devicesInErrorCount = 0;
+        var guardsInErrorCount = 0;
+        var alarmsInErrorCount = 0;
+        for (var i = 0; i < devices.length; i++) {
+            var device = devices[i];
+            devicesCount++;
+            if (device.status !== 'ok') {
+                devicesInErrorCount++;
+            }
+        }
+        var stats = {
+            devices: devicesCount,
+            guards: guardsCount,
+            alarms: alarmsCount,
+            devicesInError: devicesInErrorCount,
+            guardsInError: guardsInErrorCount,
+            alarmsInError: alarmsInErrorCount,
+        }
+        this.set('stats', stats);
+    }
 });

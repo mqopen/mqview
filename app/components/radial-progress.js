@@ -57,14 +57,8 @@ export default Ember.Component.extend(GraphicSupport, MarginConvention, {
             .range([0, 2 * Math.PI]);
     }).readOnly(),
 
-    yScale: Ember.computed('radius', function() {
-        return d3.scale.sqrt()
-            .range([0, this.get('radius')]);
-    }).readOnly(),
-
     arcGenerator: Ember.computed(function() {
         var xScale = this.get('xScale');
-        var yScale = this.get('yScale');
         var radius = this.get('radius');
         var pathWidht = this.get('pathWidht');
         return d3.svg.arc()
@@ -96,21 +90,13 @@ export default Ember.Component.extend(GraphicSupport, MarginConvention, {
         var arc = this.get('arcGenerator');
         selection.append('g')
                 .append('path')
-                    //.attr('transform', 'translate(100,100)')
                     .attr('d', arc);
     },
 
     drawLabel: function(selection) {
         selection.append('g')
             .append('text')
-                //.attr('transform', this.getTranslation())
-                //.attr('x', this.get('widht')/2)
-                //.attr('y', 10)
                 .style("text-anchor", "middle")
-                .text(function(d) { return d + '%'; });
-    },
-
-    getTranslation: function() {
-        return "translate(" + this.get('radius')/2 + "," + 0 + ")";
+                .text((d) => d + '%');
     },
 });

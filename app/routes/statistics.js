@@ -18,9 +18,11 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+    guardData: Ember.inject.service('guard-data'),
     model: function() {
+        var guardData = this.get('guardData');
         return {
-            deviceOK: 90,
+            deviceOK: guardData.getDevicesCount() / 100,
             topicOK: 60,
             alarmOK: 40
         };
