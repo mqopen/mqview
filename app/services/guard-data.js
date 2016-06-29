@@ -26,7 +26,7 @@ export default Ember.Service.extend({
         alarms: 0,
         devicesInError: 0,
         guardsInError: 0,
-        alarmsInError:0
+        alarmsInError: 0,
     },
     init: function() {
         this._super(...arguments);
@@ -166,7 +166,9 @@ export default Ember.Service.extend({
                 "status": presence.status,
                 "message": presence.message};
         } else {
-            return null;
+            return {
+                "status": "ok",
+                "message": "ok"};;
         }
     },
 
