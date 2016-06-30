@@ -2,12 +2,12 @@
     <h2>{{model.name}}</h2>
     <div>
         <h3>Presence</h3>
-        {{presence-detail presence=model.presence}}
+        {{presence-detail deviceName=model.name}}
     </div>
     <div>
         <h3>Data</h3>
         {{#each model.guards as |guard|}}
-            {{topic-detail topicDetail=(action 'topicDetail') guard=guard}}
+            {{topic-detail topicDetail=(action 'topicDetail') deviceName=model.name}}
         {{/each}}
     </div>
     <div>

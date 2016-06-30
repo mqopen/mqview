@@ -40,19 +40,13 @@ export default Ember.Route.extend({
 
     getDevices: function() {
         var devices = this.get('guardData').getDevices();
+        var deviceNames = Object.keys(devices);
         var _d = [];
-        for (var i = 0; i < devices.length; i++) {
-            var device = devices[i];
-            var status = "device-ok";
-            if (device.status != "ok")
-                status = "device-error"
-            var guardCount = 0;
-            var alarmCount = 0;
-            for (var j = 0; j < device.guards.length; j++) {
-                var guard = device.guards[j];
-                guardCount++;
-                alarmCount += guard.alarms.length;
-            }
+        for (var i = 0; i < deviceNames.length; i++) {
+            var device = devices[deviceNames[i]];
+            var status = device.getStatus();
+            var guardCount = device.getGuardCount();
+            var alarmCount = device.getAlarmCount();
             _d.push(
                 {
                     name: device.name,
@@ -66,10 +60,11 @@ export default Ember.Route.extend({
 
     getBrokers: function() {
         var brokers = this.get('guardData').getBrokers();
+        var brokerNames = Object.keys(brokers);
         var _b = [];
-        for (var i = 0; i < brokers.length; i++) {
-            var broker = brokers[i];
-            _b.push(broker);
+        for (var i = 0; i < brokerNames.length; i++) {
+            var broker = brokers[brokerNames[i]];
+            _b.push(broker.name);
         }
         return _b;
     },

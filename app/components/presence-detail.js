@@ -18,4 +18,31 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+    guardData: Ember.inject.service('guard-data'),
+    deviceName: null,
+
+    init: function() {
+        this._super(...arguments);
+    },
+
+    presence: Ember.computed('deviceName', function() {
+        var deviceName = this.get('deviceName');
+        var device = this.get('guardData').getDevice(deviceName);
+        if (!device) {
+            return {
+                hasPresence: false,
+            };
+        } else {
+            var presence = device.presence;
+            var isOk = presence.isOk();
+            var status =  isOk ? "presence-ok" : "presence-error";
+            return {
+                hasPresence: true,
+                topic: presence.dataIdentifier.topic,
+                isOk: isOk,
+                message: presence.message,
+                status: status,
+            };
+        }
+    }),
 });

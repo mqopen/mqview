@@ -17,30 +17,23 @@
 
 import Ember from 'ember';
 
-export default Ember.Component.extend({
-    guardData: Ember.inject.service('guard-data'),
-    deviceName: null,
+export default Ember.Object.extend({
+    name: null,
+    criteria: null,
+    status: null,
+    message: null,
 
-    topic: Ember.computed('deviceName', function() {
-        var deviceName = this.get('deviceName');
-        var device = this.get('guardData').getDevice(deviceName);
-        if (!device) {
-            return {
-            };
-        } else {
-            return {
-            };
-        }
-    }),
-
-    actions: {
-        topicDetail: function(topic, alarm) {
-            console.log('topic detail clicked: ' + topic + ' ' + alarm);
-            this.sendAction('topicDetail', this.convertTopic(topic), alarm);
-        },
+    updateError: function(status, message) {
+        this.set('status', status);
+        this.set('message', message);
     },
 
-    convertTopic: function(topic) {
-        return topic.replace(/\//g, '.');
+    setOk: function() {
+        this.set('status', 'ok');
+        this.set('message', 'ok');
+    },
+
+    isOk: function() {
+        return this.get('status') === 'ok';
     },
 });

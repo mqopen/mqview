@@ -24,10 +24,12 @@
         <div class="col-md-3">
             <h3>Navigation</h3>
             <div id=device-tree>
+                <p>aa{{testDevice.name}}</p>
                 {{ember-jstree
-                    eventDidSelectNode = (action 'treeSelectNode')
-                    themes=treeTheme
-                    data=treeData}}
+                    eventDidSelectNode = 'treeSelectNode'
+                    skipLoading = true
+                    themes = treeTheme
+                    data = treeData}}
             </div>
         </div>
         <div class="col-md-9">

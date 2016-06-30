@@ -29,12 +29,13 @@ export default Ember.Route.extend({
     },
 
     model: function(params) {
-        return this.getDevice(params.name);
+        return this.get('guardData').getDevice(params.name);
     },
 
     getDevice: function(name) {
         var guardData = this.get('guardData');
         var device = guardData.getDevice(name);
+        console.log(device);
         if (device) {
             return {
                 name: device.name,

@@ -16,10 +16,14 @@
  */
 
 import Ember from 'ember';
+import Device from '../devices/device';
+import DeviceTransform from '../devices/device-transform';
 
 export default Ember.Service.extend({
     devices: null,
     brokers: null,
+    deviceTransform: DeviceTransform.create(),
+
     stats: {
         devices: 0,
         guards: 0,
@@ -28,6 +32,7 @@ export default Ember.Service.extend({
         guardsInError: 0,
         alarmsInError: 0,
     },
+
     init: function() {
         this._super(...arguments);
         this.set('devices', []);
@@ -35,76 +40,20 @@ export default Ember.Service.extend({
         this._updateStats();
     },
 
-    initDevices: function(devices) {
-        this.set('devices', devices);
-        this._updateStats();
-    },
+    onData: function(inputJSON) {
+        if (inputJSON.feed == 'init') {
+            var devices = this.get('deviceTransform').getDevices(inputJSON.devices)
+            var brokers = this.get('deviceTransform').getBrokers(inputJSON.brokers)
 
-    initBrokers: function(brokers) {
-        this.set('brokers', brokers);
-    },
-
-    updateDevices: function(devices) {
-        for (var i = 0; i < devices.length; i++) {
-            var device = devices[i];
-            this.updateDevice(device);
-        }
-        this._updateStats();
-        this.notifyPropertyChange('devices');
-    },
-
-    updateDevice: function(device) {
-        var deviceIndex = this.getDeviceIndex(device.name);
-        if (deviceIndex === null) {
-            return null;
-        } else {
-            var devices = this.get('devices');
-            var currentDevice = devices[deviceIndex];
-            devices[deviceIndex] = this.createNewDevice(currentDevice, device);
-        }
-    },
-
-    createNewDevice: function(currentDevice, update) {
-        currentDevice.status = update.status;
-        currentDevice.reasons = this.createNewReasons(currentDevice.reasons, update.reasons);
-        return currentDevice;
-    },
-
-    createNewReasons: function(currentReasons, update) {
-        currentReasons.presence = this.createNewPresence(currentReasons.presence, update.presence);
-        currentReasons.guards = this.createNewGuards(currentReasons.guards, update.guards);
-        return currentReasons;
-    },
-
-    createNewGuards: function(currentGuards, update) {
-        if (update === null) {
-            return currentGuards;
-        } else if (update.length == 0) {
-            return currentGuards;
-        } else {
-            for (var i = 0; i < update.length; i++) {
-                var updateGuard = update[i];
-                for (var j = 0; j < currentGuards.length; j++) {
-                    var currentGuard = currentGuards[j];
-                    if (this.areDataIdentifiersEquals(updateGuard.guard, currentGuard.guard)) {
-                        currentGuards[j] = updateGuard;
-                    }
-                }
+            this.set('devices', devices);
+            this.set('brokers', brokers);
+        } else if (inputJSON.feed == 'update') {
+            var devices = this.get('devices')
+            for (var i = 0; i < inputJSON.devices.length; i++) {
+                var device = inputJSON.devices[i]
+                this.get('deviceTransform').applyReasons(devices, device.reasons);
             }
-            return currentGuards;
         }
-    },
-
-    createNewPresence: function(currentPresence, update) {
-        if (update === null) {
-            return currentPresence;
-        } else {
-            // TODO
-            return currentPresence;
-        }
-    },
-
-    updateBrokers: function(brokers) {
     },
 
     getDevices: function() {
@@ -124,52 +73,11 @@ export default Ember.Service.extend({
     },
 
     getDevice: function(name) {
-        var index = this.getDeviceIndex(name);
-        if (index === null) {
-            return null;
-        } else {
-            var devices = this.get('devices');
-            return devices[index];
-        }
-    },
-
-    getDeviceIndex: function(name) {
-        var devices = this.get('devices');
-        for (var i = 0; i < devices.length; i++) {
-            var device = devices[i];
-            if (device.name === name) {
-                return i;
-            }
-        }
-        return null;
+        return this.get('devices')[name];
     },
 
     getBroker: function(name) {
-        var brokers = this.get('brokers');
-        for (var i = 0; i < brokers.length; i++) {
-            var broker = brokers[i];
-            if (broker.name === name) {
-                return broker;
-            }
-        }
-        return null;
-    },
-
-    getPresenceReason: function(deviceName) {
-        var device = this.getDevice(deviceName);
-        if (device === null) {
-            return null;
-        }
-        if (device.reasons.presence) {
-            var presence = device.reasons.presence;
-            return {
-                "status": presence.status,
-                "message": presence.message};
-        } else {
-            return {
-                "status": "ok",
-                "message": "ok"};;
-        }
+        return this.get('brokers')[name];
     },
 
     getGuardReasons: function(deviceName, dataIdentifier) {
@@ -241,5 +149,9 @@ export default Ember.Service.extend({
             guardsInError: guardsInErrorCount,
             alarmsInError: alarmsInErrorCount,
         });
-    }
+    },
+
+    getTestDevice: function() {
+        return Device.create({});
+    },
 });

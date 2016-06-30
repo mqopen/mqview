@@ -21,8 +21,12 @@ export default Ember.Controller.extend({
     guardData: Ember.inject.service('guard-data'),
     websocket: Ember.inject.service('websockets'),
     treeData: null,
+    testDevice: null,
     treeTheme: {
         dots: false,
+    },
+    refresh: {
+        skipLoading: false,
     },
     init: function() {
         this._super(...arguments);
@@ -37,6 +41,7 @@ export default Ember.Controller.extend({
         }, this);
         this.get('guardData').addDeviceObserver(this, 'updateTree');
         this.set('treeData', this.getTreeBaseData());
+        this.set('testDevice', this.get('guardData').getTestDevice());
     },
 
     onSocketOpen: function(event) {
@@ -44,12 +49,7 @@ export default Ember.Controller.extend({
 
     onSocketMessage: function(event) {
         var msg = JSON.parse(event.data);
-        if (msg.feed === "init") {
-            this.get('guardData').initDevices(msg.devices);
-            this.get('guardData').initBrokers(msg.brokers);
-        } else if (msg.feed === "update") {
-            this.get('guardData').updateDevices(msg.devices);
-        }
+        this.get('guardData').onData(msg);
     },
 
     onSocketError: function(event) {
@@ -58,12 +58,11 @@ export default Ember.Controller.extend({
     updateTree: function(sender, key, value, rev) {
         var tData = this.getTreeBaseData();
         var devices = this.get('guardData').getDevices();
-        var deviceList = []
-        for (var i = 0; i < devices.length; i++) {
-            var device = devices[i];
+        var deviceNames = Object.keys(devices);
+        for (var i = 0; i < deviceNames.length; i++) {
             tData[1].children.push(
                 {
-                    text: device.name,
+                    text: deviceNames[i],
                     icon: "glyphicon glyphicon-tasks",
                     li_attr: {
                         class: "device-node"
