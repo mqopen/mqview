@@ -69,34 +69,35 @@ export default Ember.Component.extend(GraphicSupport, MarginConvention, {
     }),
 
     call: function(selection) {
+        var context = this;
         var width = this.get('contentWidth');
         var height = this.get('contentHeight');
+
         selection.attr('transform', `translate(${width / 2} ${height / 2 + this.get('margin.top')})`);
-        this.innerLayer(selection);
+        selection.each(function() {
+            context.radialProgress(d3.select(this));
+            context.label(d3.select(this));
+        });
     },
 
-    innerLayer: join('progressData', '.path', {
-        update: function(selection) {
-        },
+    radialProgress: join('progressData', 'path', {
         enter: function(selection) {
-            this.drawProgress(selection);
-            this.drawLabel(selection);
+            var context = this;
+            var arc = this.get('arcGenerator');
+
+            selection.append('path')
+                    .attr('d', arc);
         },
-        exit: function(selection) {
-        }
+        update: function(selection) {
+            var arc = this.get('arcGenerator');
+            selection.attr('d', arc);
+        },
     }),
 
-    drawProgress: function(selection) {
-        var arc = this.get('arcGenerator');
-        selection.append('g')
-                .append('path')
-                    .attr('d', arc);
-    },
-
-    drawLabel: function(selection) {
-        selection.append('g')
-            .append('text')
-                .style("text-anchor", "middle")
+    label: join('progressData', 'text', {
+        update: function(selection) {
+            selection.style("text-anchor", "middle")
                 .text((d) => d + '%');
-    },
+        },
+    }),
 });

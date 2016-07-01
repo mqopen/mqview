@@ -73,6 +73,10 @@ export default Ember.Service.extend({
         this.addObserver('brokers', target, method);
     },
 
+    addStatisticsObserver: function(target, method) {
+        this.addObserver('statistics', target, method);
+    },
+
     getDevice: function(name) {
         return this.get('devices')[name];
     },

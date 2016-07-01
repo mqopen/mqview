@@ -18,12 +18,11 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-
     guardData: Ember.inject.service('guard-data'),
 
     init: function() {
         this._super(...arguments);
-        this.get('guardData').addDeviceObserver(this, this.onStatisticsUpdate);
+        this.get('guardData').addStatisticsObserver(this, this.onStatisticsUpdate);
     },
 
     onStatisticsUpdate: function(sender, key, value, rev) {
@@ -36,12 +35,12 @@ export default Ember.Route.extend({
         var guardsOK = statistics.guards - statistics.guardsInError;
         var alarmsOK = statistics.alarms - statistics.alarmsInError;
         return {
-            hasDevices: statistics.devices > 0,
-            hasGuards: statistics.guards > 0,
-            hasAlarms: statistics.alarms > 0,
-            devicesOK: 100 / statistics.devices * devicesOK,
-            topicsOK: 100 / statistics.guards * guardsOK,
-            alarmsOK: 100 / statistics.alarms * alarmsOK
+            hasDevices: true,
+            hasGuards: true,
+            hasAlarms: true,
+            devicesOK: Math.random() * 100,
+            topicsOK: Math.random() * 100,
+            alarmsOK: Math.random() * 100,
         };
     }
 });

@@ -51,9 +51,9 @@
     </div>
 </div>
 <h3>JSON update rate</h3>
-{{#data-visual as |ctx width height|}}
-    {{update-freq-plot
+{{!#data-visual as |ctx width height|}}
+    {{!update-freq-plot
         select=ctx.svg.select.graph
         width=width
         height=height}}
-{{/data-visual}}
+{{!/data-visual}}

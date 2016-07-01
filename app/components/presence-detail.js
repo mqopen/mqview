@@ -37,6 +37,8 @@ export default Ember.Component.extend({
             return {
                 hasPresence: true,
                 topic: presence.dataIdentifier.topic,
+                onlineMessage: presence.onlineMessage,
+                offlineMessage: presence.offlineMessage,
                 isOk: isOk,
                 message: presence.message,
                 status: status,
