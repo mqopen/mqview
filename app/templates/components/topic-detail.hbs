@@ -1,5 +1,5 @@
-<div class="topic-detail {{guard.status}}">
-    <p class="topic-heading">{{guard.topic}}</p>
+<div class="topic-detail {{topic.status}}">
+    <p class="topic-heading">{{topic.topic}}</p>
     <table class="table table-hover">
         <thead>
             <tr>
@@ -10,12 +10,12 @@
             </tr>
         </thead>
         <tbody>
-            {{#each guard.alarms as |alarm|}}
+            {{#each topic.alarms as |alarm|}}
                 <tr class="view-row" {{action 'topicDetail' guard.topic alarm.name}}>
                     <td class="col-md-2">{{alarm.name}}</td>
                     <td class="col-md-2">{{alarm.criteria}}</td>
                     <td class="col-md-1">
-                        {{#if alarm.isOK}}
+                        {{#if alarm.isOk}}
                             <span class="glyphicon glyphicon-ok"></span>
                         {{else}}
                             <span class="glyphicon glyphicon-remove"></span>

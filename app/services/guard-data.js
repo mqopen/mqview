@@ -20,24 +20,12 @@ import Device from '../devices/device';
 import DeviceTransform from '../devices/device-transform';
 
 export default Ember.Service.extend({
-    devices: null,
-    brokers: null,
+    devices: {},
+    brokers: {},
     deviceTransform: DeviceTransform.create(),
-
-    stats: {
-        devices: 0,
-        guards: 0,
-        alarms: 0,
-        devicesInError: 0,
-        guardsInError: 0,
-        alarmsInError: 0,
-    },
 
     init: function() {
         this._super(...arguments);
-        this.set('devices', []);
-        this.set('brokers', []);
-        this._updateStats();
     },
 
     onData: function(inputJSON) {
@@ -80,78 +68,4 @@ export default Ember.Service.extend({
         return this.get('brokers')[name];
     },
 
-    getGuardReasons: function(deviceName, dataIdentifier) {
-        var device = this.getDevice(deviceName);
-        if (device === null) {
-            return null;
-        }
-        var _r = [];
-        for (var i = 0; i < device.reasons.guards.length; i++) {
-            var reason = device.reasons.guards[i];
-            if (this.areDataIdentifiersEquals(reason.guard, dataIdentifier)) {
-                _r.push({
-                    status: reason.status,
-                    message: reason.message,
-                    alarm: reason.alarm,
-                });
-            }
-        }
-        return _r;
-    },
-
-    areDataIdentifiersEquals: function(a, b) {
-        return a.broker === b.broker && a.topic === b.topic;
-    },
-
-    getStatistics: function() {
-        return this.get('stats');
-    },
-
-    _updateStats: function() {
-        var devices = this.get('devices');
-        var devicesCount = 0;
-        var guardsCount = 0;
-        var alarmsCount = 0;
-        var devicesInErrorCount = 0;
-        var guardsInErrorCount = 0;
-        var alarmsInErrorCount = 0;
-        for (var i = 0; i < devices.length; i++) {
-            var device = devices[i];
-            devicesCount++;
-            if (device.status !== 'ok') {
-                devicesInErrorCount++;
-            }
-
-            /* Guards. */
-            for (var j = 0; j < device.guards.length; j++) {
-                var guard = device.guards[j];
-                guardsCount++;
-                alarmsCount += guard.alarms.length;
-            }
-
-            /* Reasons. */
-            if (device.reasons !== null && device.reasons.guards.length > 0) {
-                guardsInErrorCount++;
-                for (var j = 0; j < device.reasons.guards.length; j++) {
-                    var reason = device.reasons.guards[j];
-                    if (reason.status !== 'ok') {
-                        alarmsInErrorCount++;
-                    }
-                }
-            }
-        }
-
-        this.set('stats', {
-            devices: devicesCount,
-            guards: guardsCount,
-            alarms: alarmsCount,
-            devicesInError: devicesInErrorCount,
-            guardsInError: guardsInErrorCount,
-            alarmsInError: alarmsInErrorCount,
-        });
-    },
-
-    getTestDevice: function() {
-        return Device.create({});
-    },
 });

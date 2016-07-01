@@ -41,7 +41,6 @@ export default Ember.Controller.extend({
         }, this);
         this.get('guardData').addDeviceObserver(this, 'updateTree');
         this.set('treeData', this.getTreeBaseData());
-        this.set('testDevice', this.get('guardData').getTestDevice());
     },
 
     onSocketOpen: function(event) {

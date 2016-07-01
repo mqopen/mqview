@@ -19,19 +19,39 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     guardData: Ember.inject.service('guard-data'),
-    deviceName: null,
+    guard: null,
 
-    topic: Ember.computed('deviceName', function() {
-        var deviceName = this.get('deviceName');
-        var device = this.get('guardData').getDevice(deviceName);
-        if (!device) {
+    topic: Ember.computed('guard', function() {
+        var guard = this.get('guard');
+        if (!guard) {
             return {
+                hasData: false,
             };
         } else {
             return {
+                hasData: true,
+                topic: guard.dataIdentifier.topic,
+                alarms: this.getAlarms(guard.getAlarmsArray()),
+                status: guard.isOk() ? "topic-ok" : "topic-error",
             };
         }
     }),
+
+    getAlarms: function(alarms) {
+        var _alarms = [];
+        for (var i = 0; i < alarms.length; i++) {
+            var alarm = alarms[i];
+            _alarms.push(
+                {
+                    name: alarm.name,
+                    criteria: alarm.criteria,
+                    isOk: alarm.isOk(),
+                    message: alarm.message,
+                }
+            );
+        }
+        return _alarms;
+    },
 
     actions: {
         topicDetail: function(topic, alarm) {

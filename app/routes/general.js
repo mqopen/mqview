@@ -32,6 +32,7 @@ export default Ember.Route.extend({
 
     model: function() {
         return {
+            devs: this.get('guardData').getDevices(),
             devices: this.getDevices(),
             brokers: this.getBrokers(),
             services: [],

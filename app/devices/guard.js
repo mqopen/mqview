@@ -21,6 +21,17 @@ export default Ember.Object.extend({
     dataIdentifier: null,
     alarms: {},
 
+    getAlarmsArray: function() {
+        var alarmDict = this.get('alarms');
+        var alarmNames = Object.keys(alarmDict);
+        var alarms = [];
+        for (var i = 0; i < alarmNames.length; i++) {
+            var alarm = alarmDict[alarmNames[i]];
+            alarms.push(alarm);
+        }
+        return alarms;
+    },
+
     isOk: function() {
         var alarms = this.get('alarms');
         var alarmNames = Object.keys(alarms);
