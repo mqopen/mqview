@@ -18,14 +18,18 @@
 import Ember from 'ember';
 import Device from '../devices/device';
 import DeviceTransform from '../devices/device-transform';
+import Statistics from '../devices/statistics';
 
 export default Ember.Service.extend({
+    deviceTransform: DeviceTransform.create(),
+
     devices: {},
     brokers: {},
-    deviceTransform: DeviceTransform.create(),
+    statistics: null,
 
     init: function() {
         this._super(...arguments);
+        this.set('statistics', Statistics.create());
     },
 
     onData: function(inputJSON) {
@@ -35,13 +39,22 @@ export default Ember.Service.extend({
 
             this.set('devices', devices);
             this.set('brokers', brokers);
+
+            this.updateStatistics(devices);
         } else if (inputJSON.feed == 'update') {
             var devices = this.get('devices')
             for (var i = 0; i < inputJSON.devices.length; i++) {
                 var device = inputJSON.devices[i]
                 this.get('deviceTransform').applyReasons(devices, device.reasons);
             }
+            this.notifyPropertyChange('devices');
+            this.updateStatistics(devices);
         }
+    },
+
+    updateStatistics: function(devices) {
+        this.get('statistics').update(devices);
+        this.notifyPropertyChange('statistics');
     },
 
     getDevices: function() {
@@ -68,4 +81,7 @@ export default Ember.Service.extend({
         return this.get('brokers')[name];
     },
 
+    getStatistics: function() {
+        return this.get('statistics');
+    },
 });

@@ -18,7 +18,6 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    guardData: Ember.inject.service('guard-data'),
     guard: null,
 
     topic: Ember.computed('guard', function() {

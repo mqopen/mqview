@@ -32,6 +32,11 @@ export default Ember.Object.extend({
         return alarms;
     },
 
+    getAlarmCount: function() {
+        var alarms = this.get('alarms');
+        return Object.keys(alarms).length;
+    },
+
     isOk: function() {
         var alarms = this.get('alarms');
         var alarmNames = Object.keys(alarms);

@@ -67,10 +67,16 @@ export default Ember.Object.extend({
     },
 
     getGuardCount: function() {
-        return 0;
+        return this.get('guards').length;
     },
 
     getAlarmCount: function() {
-        return 0;
+        var guards = this.get('guards');
+        var alarmCount = 0;
+        for (var i = 0; i < guards.length; i++) {
+            var guard = guards[i];
+            alarmCount += guard.getAlarmCount();
+        }
+        return alarmCount;
     },
 });
