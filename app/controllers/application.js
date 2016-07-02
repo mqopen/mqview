@@ -20,14 +20,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
     guardData: Ember.inject.service('guard-data'),
     websocket: Ember.inject.service('websockets'),
-    treeData: null,
-    testDevice: null,
-    treeTheme: {
-        dots: false,
-    },
-    refresh: {
-        skipLoading: false,
-    },
+
     init: function() {
         this._super(...arguments);
         var socket = this.get('websocket').socketFor('ws://localhost:8765/');
@@ -39,8 +32,6 @@ export default Ember.Controller.extend({
                 socket.reconnect();
             }, 1000);
         }, this);
-        this.get('guardData').addDeviceObserver(this, 'updateTree');
-        this.set('treeData', this.getTreeBaseData());
     },
 
     onSocketOpen: function(event) {
@@ -52,63 +43,5 @@ export default Ember.Controller.extend({
     },
 
     onSocketError: function(event) {
-    },
-
-    updateTree: function(sender, key, value, rev) {
-        var tData = this.getTreeBaseData();
-        var devices = this.get('guardData').getDevices();
-        var deviceNames = Object.keys(devices);
-        for (var i = 0; i < deviceNames.length; i++) {
-            tData[1].children.push(
-                {
-                    text: deviceNames[i],
-                    icon: "glyphicon glyphicon-tasks",
-                    li_attr: {
-                        class: "device-node"
-                    }
-                });
-        }
-        this.set('treeData', tData);
-    },
-
-    getTreeBaseData: function() {
-        return [
-            {
-                text: 'General',
-                icon: 'glyphicon glyphicon-th',
-                state: {
-                    selected: true
-                },
-                li_attr: {
-                    class: 'tree-general'
-                }
-            },
-            {
-                text: 'Devices',
-                icon: 'glyphicon glyphicon-arrow-right',
-                state: {
-                    opened: true
-                },
-                children: []
-            },
-            {
-                text: 'Brokers',
-                icon: 'glyphicon glyphicon-arrow-right',
-                state: {
-                    opened: true
-                },
-                children: []
-            }
-        ];
-    },
-
-    actions: {
-        treeSelectNode: function(e, data) {
-            if (e.li_attr.class === "tree-general") {
-                this.transitionToRoute("general");
-            } else if (e.li_attr.class === "device-node") {
-                this.transitionToRoute("detail.device", e.text);
-            }
-        },
     },
 });
