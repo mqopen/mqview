@@ -18,6 +18,55 @@
 import Ember from 'ember';
 
 export default Ember.Object.extend({
+    devicesOk: null,
+    devicesTotal: null,
+    guardsOk: null,
+    guardsTotal: null,
+    alarmsOk: null,
+    alarmsTotal: null,
+    presenceOk: null,
+    presenceTotal: null,
+
+    hasData: function() {
+        return this.get('devicesTotal') !== null;
+    },
+
     update: function(devices) {
+        var deviceNames = Object.keys(devices);
+
+        var devicesOk = 0;
+        var devicesTotal = deviceNames.length;
+        var guardsOk = 0;
+        var guardsTotal = 0;
+        var alarmsOk = 0;
+        var alarmsTotal = 0;
+        var presenceOk = 0;
+        var presenceTotal = 0;
+
+        for (var i = 0; i < deviceNames.length; i++) {
+            var device = devices[deviceNames[i]];
+
+            if (device.isOk()) {
+                devicesOk++;
+            }
+
+            if (device.hasPresence()) {
+                presenceTotal++;
+                if (device.presence.isOk()) {
+                    presenceOk++;
+                }
+            }
+        }
+
+        this.set('devicesOk', devicesOk);
+        this.set('devicesTotal', devicesTotal);
+        this.set('guardsOk', guardsOk);
+        this.set('guardsTotal', guardsTotal);
+        this.set('alarmsOk', alarmsOk);
+        this.set('alarmsTotal', alarmsTotal);
+        this.set('presenceOk', presenceOk);
+        this.set('presenceTotal', presenceTotal);
+
+        console.log(this);
     },
 });

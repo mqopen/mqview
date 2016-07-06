@@ -25,22 +25,21 @@ export default Ember.Route.extend({
         this.get('guardData').addStatisticsObserver(this, this.onStatisticsUpdate);
     },
 
-    onStatisticsUpdate: function(sender, key, value, rev) {
+    onStatisticsUpdate: function() {
         this.refresh();
     },
 
     model: function() {
         var statistics = this.get('guardData').getStatistics();
-        var devicesOK = statistics.devices - statistics.devicesInError;
-        var guardsOK = statistics.guards - statistics.guardsInError;
-        var alarmsOK = statistics.alarms - statistics.alarmsInError;
         return {
-            hasDevices: true,
-            hasGuards: true,
-            hasAlarms: true,
-            devicesOK: Math.random() * 100,
-            topicsOK: Math.random() * 100,
-            alarmsOK: Math.random() * 100,
+            hasData: statistics.hasData(),
+
+            devicesOk: 100 / statistics.devicesTotal * statistics.devicesOk,
+            guardsOk: 100 / statistics.guardsTotal * statistics.guardsOk,
+            alarmsOK: 100 /statistics.alarmsTotal * statistics.alarmsOk,
+            devicesOnline: 100 / statistics.presenceTotal * statistics.presenceOk,
+            devicesUnknown: 0,
+            total: 50,
         };
     }
 });

@@ -3,48 +3,122 @@
     <div class="col-md-4">
         <h3>Devices</h3>
         <div class="radial-progress">
-            {{#if model.hasDevices}}
+            {{#if model.hasData}}
                 {{#data-visual as |ctx width height|}}
                     {{radial-progress
                         select=ctx.svg.select.chart
                         width=width
                         height=height
-                        progress=model.devicesOK}}
+                        progress=model.devicesOk}}
+
+                    {{#tooltip-on-component}}
+                        Devices with no errors.
+                    {{/tooltip-on-component}}
                 {{/data-visual}}
             {{else}}
-                <p>No devices</p>
+                <p>No data</p>
             {{/if}}
         </div>
     </div>
     <div class="col-md-4">
         <h3>Topics</h3>
         <div class="radial-progress">
-            {{#if model.hasGuards}}
+            {{#if model.hasData}}
                 {{#data-visual as |ctx width height|}}
                     {{radial-progress
                         select=ctx.svg.select.chart
                         width=width
                         height=height
-                        progress=model.topicsOK}}
+                        progress=model.guardsOk}}
+
+                    {{#tooltip-on-component}}
+                        Topics with no errors.
+                    {{/tooltip-on-component}}
                 {{/data-visual}}
             {{else}}
-                <p>No guards</p>
+                <p>No data</p>
             {{/if}}
         </div>
     </div>
     <div class="col-md-4">
         <h3>Alarms</h3>
         <div class="radial-progress">
-            {{#if model.hasAlarms}}
+            {{#if model.hasData}}
                 {{#data-visual as |ctx width height|}}
                     {{radial-progress
                         select=ctx.svg.select.chart
                         width=width
                         height=height
-                        progress=model.alarmsOK}}
+                        progress=model.alarmsOk}}
+
+                    {{#tooltip-on-component}}
+                        Alarms with no errors.
+                    {{/tooltip-on-component}}
                 {{/data-visual}}
             {{else}}
-                <p>No alarms</p>
+                <p>No data</p>
+            {{/if}}
+        </div>
+    </div>
+</div>
+<div class="row text-center">
+    <div class="col-md-4">
+        <h3>Online</h3>
+        <div class="radial-progress">
+            {{#if model.hasData}}
+                {{#data-visual as |ctx width height|}}
+                    {{radial-progress
+                        select=ctx.svg.select.chart
+                        width=width
+                        height=height
+                        progress=model.devicesOnline}}
+
+                    {{#tooltip-on-component}}
+                        Here is the info in a tooltip!
+                    {{/tooltip-on-component}}
+                {{/data-visual}}
+            {{else}}
+                <p>No data</p>
+            {{/if}}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h3>Presence unknown</h3>
+        <div class="radial-progress">
+            {{#if model.hasData}}
+                {{#data-visual as |ctx width height|}}
+                    {{radial-progress
+                        select=ctx.svg.select.chart
+                        width=width
+                        height=height
+                        progress=model.devicesUnknown}}
+
+                    {{#tooltip-on-component}}
+                        Here is the info in a tooltip!
+                    {{/tooltip-on-component}}
+                {{/data-visual}}
+            {{else}}
+                <p>No data</p>
+            {{/if}}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h3>Total</h3>
+        <div class="radial-progress">
+            {{#if model.hasData}}
+                {{#data-visual as |ctx width height|}}
+                    {{radial-progress
+                        select=ctx.svg.select.chart
+                        width=width
+                        height=height
+                        progress=model.total}}
+
+                    {{#tooltip-on-component}}
+                        Here is the info in a tooltip!
+                    {{/tooltip-on-component}}
+                {{/data-visual}}
+            {{else}}
+                <p>No data</p>
             {{/if}}
         </div>
     </div>

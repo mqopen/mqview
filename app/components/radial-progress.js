@@ -40,7 +40,8 @@ export default Ember.Component.extend(GraphicSupport, MarginConvention, {
     progress: 0,
 
     progressData: Ember.computed('progress', function() {
-        return [Math.round(this.get('progress'))];
+        var progress = this.get('progress');
+        return [Math.round(progress)];
     }),
 
     diameter: Ember.computed('width', 'height', function() {
