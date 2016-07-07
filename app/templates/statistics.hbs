@@ -9,12 +9,13 @@
                         select=ctx.svg.select.chart
                         width=width
                         height=height
-                        progress=model.devicesOk}}
+                        progress=model.devices.percentage}}
 
                     {{#tooltip-on-component}}
                         Devices with no errors.
                     {{/tooltip-on-component}}
                 {{/data-visual}}
+                <p>{{model.devices.ok}}/{{model.devices.total}}</p>
             {{else}}
                 <p>No data</p>
             {{/if}}
@@ -29,12 +30,13 @@
                         select=ctx.svg.select.chart
                         width=width
                         height=height
-                        progress=model.guardsOk}}
+                        progress=model.guards.percentage}}
 
                     {{#tooltip-on-component}}
                         Topics with no errors.
                     {{/tooltip-on-component}}
                 {{/data-visual}}
+                <p>{{model.guards.ok}}/{{model.guards.total}}</p>
             {{else}}
                 <p>No data</p>
             {{/if}}
@@ -49,12 +51,13 @@
                         select=ctx.svg.select.chart
                         width=width
                         height=height
-                        progress=model.alarmsOk}}
+                        progress=model.alarms.percentage}}
 
                     {{#tooltip-on-component}}
                         Alarms with no errors.
                     {{/tooltip-on-component}}
                 {{/data-visual}}
+                <p>{{model.alarms.ok}}/{{model.alarms.total}}</p>
             {{else}}
                 <p>No data</p>
             {{/if}}
@@ -71,12 +74,13 @@
                         select=ctx.svg.select.chart
                         width=width
                         height=height
-                        progress=model.devicesOnline}}
+                        progress=model.presence.percentage}}
 
                     {{#tooltip-on-component}}
                         Here is the info in a tooltip!
                     {{/tooltip-on-component}}
                 {{/data-visual}}
+                <p>{{model.presence.ok}}/{{model.presence.total}}</p>
             {{else}}
                 <p>No data</p>
             {{/if}}
