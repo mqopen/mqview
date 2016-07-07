@@ -56,6 +56,24 @@ export default Ember.Object.extend({
                     presenceOk++;
                 }
             }
+
+            for (var j = 0; j < device.guards.length; j++) {
+                var guard = device.guards[j];
+
+                guardsTotal++;
+                if (guard.isOk()) {
+                    guardsOk++;
+                }
+
+                var alarmNames = Object.keys(guard.alarms);
+                alarmsTotal += alarmNames.length;
+                for (var k = 0; k < alarmNames.length; k++) {
+                    var alarm = guard.alarms[alarmNames[k]];
+                    if (alarm.isOk()) {
+                        alarmsOk++;
+                    }
+                }
+            }
         }
 
         this.set('devicesOk', devicesOk);
@@ -66,7 +84,5 @@ export default Ember.Object.extend({
         this.set('alarmsTotal', alarmsTotal);
         this.set('presenceOk', presenceOk);
         this.set('presenceTotal', presenceTotal);
-
-        console.log(this);
     },
 });

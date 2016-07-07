@@ -33,13 +33,20 @@ export default Ember.Route.extend({
         var statistics = this.get('guardData').getStatistics();
         return {
             hasData: statistics.hasData(),
-
-            devicesOk: 100 / statistics.devicesTotal * statistics.devicesOk,
-            guardsOk: 100 / statistics.guardsTotal * statistics.guardsOk,
-            alarmsOK: 100 /statistics.alarmsTotal * statistics.alarmsOk,
-            devicesOnline: 100 / statistics.presenceTotal * statistics.presenceOk,
-            devicesUnknown: 0,
-            total: 50,
+            devicesOk: this.calulatePercentage(statistics.devicesTotal, statistics.devicesOk),
+            guardsOk: this.calulatePercentage(statistics.guardsTotal, statistics.guardsOk),
+            alarmsOk: this.calulatePercentage(statistics.alarmsTotal, statistics.alarmsOk),
+            devicesOnline: this.calulatePercentage(statistics.presenceTotal, statistics.presenceOk),
+            devicesUnknown: 10,
+            total: Math.random() * 100,
         };
-    }
+    },
+
+    calulatePercentage: function(factor, multiplier) {
+        var percentage = 100 / factor * multiplier;
+        if (isNaN(percentage)) {
+            percentage = 0;
+        }
+        return percentage;
+    },
 });
