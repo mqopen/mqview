@@ -31,6 +31,7 @@ export default Ember.Component.extend(GraphicSupport, MarginConvention, {
     },
     width: 300,
     height: 300,
+    transitionDuration: 300,
     diameter: 0,
     pathWidht: 20,
     bound: {
@@ -98,12 +99,13 @@ export default Ember.Component.extend(GraphicSupport, MarginConvention, {
 
             selection.append('path')
                     .attr('class', 'radial-progress-bg')
-                    .attr('d', backgroundArc)
-                    .attr('fill', '#f0f0f0');
+                    .attr('fill', '#f0f0f0')
+                    .attr('d', backgroundArc);
 
 
             selection.append('path')
                     .attr('class', 'radial-progress-data')
+                    .attr('fill', '#000000')
                     .attr('d', dataArc)
                     .each(function(d) {
                         this._current = 0;
@@ -113,7 +115,7 @@ export default Ember.Component.extend(GraphicSupport, MarginConvention, {
         update: function(selection) {
             console.log("update");
             selection.transition()
-                        .duration(300)
+                        .duration(this.get('transitionDuration'))
                         .attrTween('d', this.arcTween);
         },
     }),
@@ -129,9 +131,8 @@ export default Ember.Component.extend(GraphicSupport, MarginConvention, {
         },
         update: function(selection) {
             selection.transition()
-                        .duration(300)
+                        .duration(this.get('transitionDuration'))
                         .tween('text', this.labelTween);
-                        //.text((d) => d + '%');
         },
     }),
 
