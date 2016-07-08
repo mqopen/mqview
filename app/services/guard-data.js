@@ -40,7 +40,7 @@ export default Ember.Service.extend({
             this.set('devices', devices);
             this.set('brokers', brokers);
 
-            this.updateStatistics(devices);
+            this.updateStatistics();
         } else if (inputJSON.feed == 'update') {
             var devices = this.get('devices')
             for (var i = 0; i < inputJSON.devices.length; i++) {
@@ -48,12 +48,12 @@ export default Ember.Service.extend({
                 this.get('deviceTransform').applyReasons(devices, device.reasons);
             }
             this.notifyPropertyChange('devices');
-            this.updateStatistics(devices);
+            this.updateStatistics();
         }
     },
 
-    updateStatistics: function(devices) {
-        this.get('statistics').update(devices);
+    updateStatistics: function() {
+        this.get('statistics').update(this.get('devices'));
         this.notifyPropertyChange('statistics');
     },
 

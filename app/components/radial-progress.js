@@ -67,7 +67,7 @@ export default Ember.Component.extend(GraphicSupport, MarginConvention, {
             .outerRadius(radius)
             .startAngle(0)
             .endAngle((x) => xScale(x));
-    }),
+    }).readOnly(),
 
     call: function(selection) {
         var context = this;
@@ -83,22 +83,54 @@ export default Ember.Component.extend(GraphicSupport, MarginConvention, {
 
     radialProgress: join('progressData', 'path', {
         enter: function(selection) {
-            var context = this;
             var arc = this.get('arcGenerator');
 
             selection.append('path')
-                    .attr('d', arc);
+                    .attr('d', arc)
+                    .each(function(d) {
+                        this._current = 0;
+                        this._arc = arc;
+                    });
         },
         update: function(selection) {
-            var arc = this.get('arcGenerator');
-            selection.attr('d', arc);
+            console.log("update");
+            selection.transition()
+                        .duration(300)
+                        .attrTween('d', this.arcTween);
         },
     }),
 
     label: join('progressData', 'text', {
+        enter: function(selection) {
+            selection.append('text')
+                        .style("text-anchor", "middle")
+                        .text('0%')
+                        .each(function(d) {
+                            this._current = 0;
+                        });
+        },
         update: function(selection) {
-            selection.style("text-anchor", "middle")
-                .text((d) => d + '%');
+            selection.transition()
+                        .duration(300)
+                        .tween('text', this.labelTween);
+                        //.text((d) => d + '%');
         },
     }),
+
+    arcTween: function(d, i, a) {
+        var arc = this._arc;
+        var interpolate = d3.interpolate(this._current, d);
+        this._current = d;
+        return function(t) {
+            return arc(interpolate(t));
+        };
+    },
+
+    labelTween: function(d, i, a) {
+        var interpolate = d3.interpolateRound(this._current, d);
+        this._current = d;
+        return function(t) {
+            this.textContent = interpolate(t) + "%";
+        };
+    },
 });
