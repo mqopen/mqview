@@ -58,7 +58,7 @@ export default Ember.Component.extend(GraphicSupport, MarginConvention, {
             .range([0, 2 * Math.PI]);
     }).readOnly(),
 
-    arcGenerator: Ember.computed(function() {
+    dataArc: Ember.computed(function() {
         var xScale = this.get('xScale');
         var radius = this.get('radius');
         var pathWidht = this.get('pathWidht');
@@ -67,6 +67,16 @@ export default Ember.Component.extend(GraphicSupport, MarginConvention, {
             .outerRadius(radius)
             .startAngle(0)
             .endAngle((x) => xScale(x));
+    }).readOnly(),
+
+    backgroundArc: Ember.computed(function() {
+        var radius = this.get('radius');
+        var pathWidht = this.get('pathWidht');
+        return d3.svg.arc()
+            .innerRadius(radius - pathWidht)
+            .outerRadius(radius)
+            .startAngle(0)
+            .endAngle(2 * Math.PI);
     }).readOnly(),
 
     call: function(selection) {
@@ -81,15 +91,23 @@ export default Ember.Component.extend(GraphicSupport, MarginConvention, {
         });
     },
 
-    radialProgress: join('progressData', 'path', {
+    radialProgress: join('progressData', 'path.radial-progress-data', {
         enter: function(selection) {
-            var arc = this.get('arcGenerator');
+            var backgroundArc = this.get('backgroundArc');
+            var dataArc = this.get('dataArc');
 
             selection.append('path')
-                    .attr('d', arc)
+                    .attr('class', 'radial-progress-bg')
+                    .attr('d', backgroundArc)
+                    .attr('fill', '#f0f0f0');
+
+
+            selection.append('path')
+                    .attr('class', 'radial-progress-data')
+                    .attr('d', dataArc)
                     .each(function(d) {
                         this._current = 0;
-                        this._arc = arc;
+                        this._arc = dataArc;
                     });
         },
         update: function(selection) {
