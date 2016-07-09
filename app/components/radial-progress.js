@@ -113,7 +113,6 @@ export default Ember.Component.extend(GraphicSupport, MarginConvention, {
                     });
         },
         update: function(selection) {
-            console.log("update");
             selection.transition()
                         .duration(this.get('transitionDuration'))
                         .attrTween('d', this.arcTween);

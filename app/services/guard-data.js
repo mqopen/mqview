@@ -43,10 +43,7 @@ export default Ember.Service.extend({
             this.updateStatistics();
         } else if (inputJSON.feed == 'update') {
             var devices = this.get('devices')
-            for (var i = 0; i < inputJSON.devices.length; i++) {
-                var device = inputJSON.devices[i]
-                this.get('deviceTransform').applyReasons(devices, device.reasons);
-            }
+            this.get('deviceTransform').applyReasons(devices, inputJSON.devices);
             this.notifyPropertyChange('devices');
             this.updateStatistics();
         }

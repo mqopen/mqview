@@ -86,7 +86,6 @@ export default Ember.Object.extend({
         for (var i = 0; i < inputJSON.length; i++) {
             var reason = inputJSON[i].reasons;
             var device = devices[inputJSON[i].name]
-
             this.applyPresence(device, reason.presence);
             this.applyGuards(device, reason.guards);
         }
@@ -155,10 +154,8 @@ export default Ember.Object.extend({
 
     applyPresence: function(device, presenceReason) {
         var presence = device.presence;
-        if (presenceReason !== null) {
+        if (presenceReason) {
             presence.updateError(presenceReason.status, presenceReason.message);
-        } else {
-            presence.setOk();
         }
     },
 
